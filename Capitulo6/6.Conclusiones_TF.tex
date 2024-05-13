@@ -1,0 +1,41 @@
+\chapter{Conclusiones y Trabajo Futuro}
+
+En el capítulo anterior revisamos la respuesta a tres de las preguntas que nos propusimos contestar cuando empezamos este trabajo. En este capítulo veremos las dos restantes, hablando de las dificultades de resolverlas y como se podrían abordar en un trabajo futuro. También se habla de las conclusiones del trabajo en general.
+
+
+\section{Conclusiones}
+
+% Qué se hizo
+
+En este trabajo se probaron diferentes combinaciones de parámetros para el Algoritmo PFI-EMOA \cite{PFI}. Los parámetros controlan que tanta importancia le damos a indicadores de convergencia (R2, IGD+) o a indicadores de diversidad (S-energy). Como estos indicadores tienen metas distintas es interesante ver cuál es el efecto de cambiarlas.
+
+% Qué experimentos
+El valor de los parámetros se cambió de manera sistemática, para comparar cuando un algoritmo tiene un desempeño distinto de manera estadísticamente significativa. El desempeño se comparó a través de indicadores de calidad en distintas categorías, como vimos en el capítulo anterior. Además de esto, se modificó el indicador de convergencia usado en \cite{PFI} en el estimador de densidad, el original es IGD+ y se hicieron los mismos experimentos con el indicador de R2. 
+
+Se realizaron 10 experimentos con una semilla aleatoria distinta para cada una de las combinaciones de parámetros (los detalles de la semilla usada están en el Apéndice \ref{sec:Apendice_semilla}). Después se caracterizó que tan buena fue la solución obteniendo el Hipervolumen, R2, IGD, IGD+, $\epsilon +$, S-energy y SPD. Así, se obtuvieron 10 mediciones de cada uno de estos indicadores por cada combinación de pesos en la escalarización de Tchebycheff. 
+
+Para medir las diferencias entre estas poblaciones de indicadores se usaron dos pruebas estadísticas. La primera que se realizó fue la de Kruskal-Wallis que nos indica si hay una diferencia significativa entre alguna combinación de parámetros. También se usó la prueba de Wilcoxon para ver en qué caso un indicador es mejor que otro. Hay que tener en cuenta que hay unos indicadores que se vuelven mejores al maximizarse y algunos se vuelven mejores al minimizarse.  
+
+% Hallazgos más importantes
+Se observan diferencias significativas en todos estos casos. Teniendo los indicadores de convergencia una preferencia por mayor peso a la parte de IGD+ o R2 en el estimador de densidad. Esto tiene sentido aunque a veces encontramos resultados que parecen indicar que para optimizar un indicador en el conjunto de aproximación final, no basta con optimizarlo paso con paso (como haría un algoritmo voraz). Sino que por el contrario, darle un peso mayor a un indicador de convergencia como S-energy resultará en un desempeño mejor.
+
+Al cambiar el indicador de convergencia con el que se define el estimador de densidad del algoritmo de PFI-EMOA \cite{PFI} de IGD+ a R2 vemos que IGD+ obtiene mucho mejores resultados, como se puede observar en la Figura \ref{fig:R2_IGDp}.
+
+Cuando se mira el efecto que tiene cambiar el peso de la escalarización de Tchebycheff en el indicador de diversidad de la aproximación al frente de Pareto obtenemos resultados contrastantes. Por un lado, en la Figura \ref{fig:borda_spd}, vemos que al darle más peso a S-Energy obtenemos un mejor desempeño en SPD. Sin embargo, al revisar S-Energy en la Figura \ref{fig:borda_senergy}, vemos que cuando le damos más importancia al indicador de convergencia obtenemos menos victorias.
+
+\section{Trabajo Futuro}
+\section*{¿Qué tipo de problemas prefieren ciertas combinaciones?}
+Esta respuesta sólo se pudo dar de manera descriptiva, a través de visualizaciones. Sin embargo, un análisis más detallado tendría que tomar en cuenta, no sólo los patrones que nos son visibles a través de gráficas de comportamiento, sino a las características mismas del problema a resolver. Este tipo de problemas, donde se intenta dar una predicción hacia los mejores parámetros que solucionarían un problema con ciertas características, caen dentro de la rama de estudio llamada Exploratory Landscape Analysis o ELA por sus siglas en inglés \cite{trajanovExplainableLandscapeAnalysis2022}. La implementación de estos métodos puede usarse para automatizar la selección de algoritmos dados algunos problemas con ciertas características y un muestreo de los resultados que se obtienen al escoger algunos problemas. En nuestro problema los parámetros a escoger incluirían características de la población, es decir, indicadores de calidad; el número de objetivos del problema, la forma del frente de Pareto (podemos ver en la Tabla \ref{Tabla:QIs}), el peso de la combinación de Tchebycheff usado para guiar el proceso de búsqueda y el indicador a optimizar. 
+
+Se entrena un modelo de aprendizaje de máquina como un árbol de decisión para poder realizar la selección de algoritmo. Así, podríamos conocer a priori que modelo usar para obtener un resultado que busquemos o que coincida con las preferencias del tomador de decisiones. 
+
+Este enfoque sería para ajustar los parámetros desde el inicio del problema y esperar los resultados, sin embargo, también podría ser usado para cambiar los parámetros momento a momento como explicamos en la siguiente sección. 
+
+\section*{¿Se puede ir cambiando este algoritmo paso a paso?}
+
+En este trabajo se fijó la combinación de indicadores desde el inicio y después se dejó ejecutar el algoritmo hasta alcanzar su condición de paro (detallado en el Algoritmo \ref{alg:PFI-EMOA}). Sin embargo, la combinación de pesos no tiene porqué ser estática. Encontrar nuevas situaciones puede llevar a que algún indicador cambie de importancia. Por ejemplo, si se estanca la convergencia se le puede dar más valor al indicador de IGD+ o inclusive cambiar el estimador de densidad para que sea, en vez de IGD+, R2 o cualquier otro indicador. Inclusive se puede cambiar la escalarización de Tchebycheff o el criterio de selección de población. Las decisiones acerca de cómo cambiar el algoritmo podrían estar informadas por los resultados de los modelos de ELA que se entrenen con todo un dataset de problemas como se explicó en la pregunta anterior. Así podríamos ir adaptándonos al problema en vez de sólo esperar a que la ejecución se acabe para saber si la elección de parámetros fue correcta.
+
+Por otro lado, es posible también usar  Aprendizaje por Refuerzo \cite{Sutton1998} para guiar la búsqueda de mejores aproximaciones al frente de Pareto. Aprendizaje por Refuerzo es una rama de la inteligencia artificial en la que se entrena a un agente para aprender qué hacer con base en una función de recompensa dada paso a paso. Es decir, se aprende la mejor manera de tomar una serie de acciones (política) dada una función de recompensa que recibe el agente con cada una de sus acciones. Esto difiere del aprendizaje supervisado en el sentido de que la función a maximizar en este último caso suele ser fija y conocida. Los métodos de solución de Aprendizaje por Refuerzo permiten inicializar un agente con una política aleatoria e ir aprendiendo una mejor política conforme vamos entrenando el modelo. El agente no necesita saber los detalles del problema antes de comenzar a entrenarse. De modo que el agente podría iniciar en una política de elección de pesos para el problema y basándose en su estado de cada iteración del problema tomar una acción de cómo modificar este peso para encontrar una solución que vaya más de acuerdo con las preferencias del tomador de decisiones. El estado estaría descrito por las características poblacionales (indicadores de calidad) así como las preferencias del DM, cualquier información que se tenga sobre el frente de Pareto del problema, etc. 
+
+
+
