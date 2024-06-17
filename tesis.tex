@@ -14,8 +14,6 @@
 %         PUEDEN INCLUIR EN ESTE ESPACIO LOS PAQUETES EXTRA, O BIEN, EN EL ARCHIVO "PhDthesisPSnPDF.cls" EN "./Latex/Classes/"
 
 
-
-
 \usepackage[spanish,es-tabla]{babel}
 \usepackage[left=2.5cm,bottom=4.5cm]{geometry}
 \spanishdecimal{.}
@@ -33,7 +31,7 @@
 \usepackage{listings}                    % PERMITE AGREGAR CÓDIGO DE LENGUAJES  DE PROGRAMACIÓN (DOCUMENTACIÓN EN GOOGLE)
 \usepackage{mathdots}                    % para el comando \iddots
 \usepackage{mathrsfs}                    % para formato de letra en ecuaciones
-\usepackage[round, sort, numbers]{natbib}  % Personalizar la bibliografía a gusto de cada quien
+\usepackage[numbers]{natbib}  % Personalizar la bibliografía a gusto de cada quien
 \usepackage[svgnames]{xcolor}
 \usepackage[most]{tcolorbox}
 \usepackage{algorithm}
@@ -211,7 +209,9 @@
 %                   REFERENCIAS                     %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % existen varios estilos de bilbiografía, pueden cambiarlos a placer
-\bibliographystyle{apalike} % otros estilos pueden ser abbrv, acm, alpha, apalike, ieeetr, plain, siam, unsrt
+\bibliographystyle{unsrt}
+
+% \bibliographystyle{apalike} % otros estilos pueden ser abbrv, acm, alpha, apalike, ieeetr, plain, siam, unsrt
 
 %El formato trae otros estilos, o pueden agregar uno que les guste:
 %\bibliographystyle{Latex/Classes/PhDbiblio-case} % title forced lower case

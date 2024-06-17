@@ -208,13 +208,13 @@ para la función $u(A,w)$ se pueden usar escalarizaciones comunes como suma pond
 % (6) Multi-objective particle swarm optimization with R2 indicator and .... https://link.springer.com/article/10.1007/s40747-021-00445-3.
 % (7) undefined. https://ieeexplore.ieee.org/servlet/opac?punumber=6552460.
 
-\subsection{Energía S} \label{sec:S-Energy}
-La energía S de Riesz \cite{sEnergy} es una medida de la uniformidad de soluciones que depende de un parámetro $s$. Tiene la ventaja de no necesitar un conjunto de referencia, es decir, es un operador unario y está dada por 
+\subsection{Energía S} \label{sec:Energía-S}
+La Energía-S de Riesz \cite{sEnergy} es una medida de la uniformidad de soluciones que depende de un parámetro $s$. Tiene la ventaja de no necesitar un conjunto de referencia, es decir, es un operador unario y está dada por 
 
 \begin{equation} \label{eq:S_energy}
     E_s(A)=\sum_{i\neq j} ||a_i-a_j||^{-s},
 \end{equation}
-mientras $s\rightarrow \infty$ la energía de Riesz tiende a soluciones más uniformes. Además, el parámetro $s$ es independiente de la forma y ha sido usado para producir conjuntos uniformemente distribuidos en una clase grande de variedades $d$-dimensionales rectificables.
+mientras $s\rightarrow \infty$ la Energía-S de Riesz tiende a soluciones más uniformes. Además, el parámetro $s$ es independiente de la forma y ha sido usado para producir conjuntos uniformemente distribuidos en una clase grande de variedades $d$-dimensionales rectificables.
 
 \subsection*{Contribución de solución al indicador}
 Para la siguiente sección también será útil definir la contribución de una solución a un cierto indicador; es decir, que tan importante es la solución particular para el desempeño de la solución. Eso es útil porque podemos distinguir cuál es la solución que menos ayuda a optimizar un indicador dado. De manera más formal usamos la Ecuación \eqref{eq:Contribucion}. Esta mide el efecto de quitar un punto en el cálculo del indicador y ver su efecto. Si $a$ es un punto que ayuda mucho a elevar el indicador, entonces $I(A)$ será muy diferente a $I(A \setminus \{a\})$.
@@ -330,7 +330,7 @@ Se han hecho muchos IB-MOEAs que, al igual que SMS-EMOA sólo utilizan uno de el
 
 \section{PFI-EMOA} \label{sec:PFI-EMOA}
 
-En esta sección se detalla el algoritmo usado en este trabajo. Recibe el nombre de Pareto Front Invariant EMOA (PFI-EMOA) y nace de la necesidad de encontrar un algoritmo que funcione para muchas dimensiones y a la vez que no tenga las restricciones mencionadas en el último párrafo de la sección anterior. La idea principal de este algoritmo es seguir con el marco principal de SMS-EMOA; es decir, usar non-dominated sorting para rankear las soluciones y usar un algoritmo de steady-state para no hacer muchas comparaciones de contribuciones a indicadores. La diferencia principal es que se reemplaza el estimador de densidad de Hipervolumen que estaba presente en SMS-EMOA por una combinación de dos indicadores: IGD+ \eqref{eq:IGDp} y la Energía s de Riesz \eqref{eq:S_energy}. Al ser estos dos indicadores de categorías diferentes (convergencia principalmente y distribución) tendrán objetivos conflictuantes que obligarán a explorar una región distinta del espacio de estados. Estos dos indicadores se combinan por medio de la función aumentada de Tchebycheff,  qeue para un vector $\vec{x}=(x_0,x_1)$ está dada por
+En esta sección se detalla el algoritmo usado en este trabajo. Recibe el nombre de Pareto Front Invariant EMOA (PFI-EMOA) y nace de la necesidad de encontrar un algoritmo que funcione para muchas dimensiones y a la vez que no tenga las restricciones mencionadas en el último párrafo de la sección anterior. La idea principal de este algoritmo es seguir con el marco principal de SMS-EMOA; es decir, usar non-dominated sorting para rankear las soluciones y usar un algoritmo de steady-state para no hacer muchas comparaciones de contribuciones a indicadores. La diferencia principal es que se reemplaza el estimador de densidad de Hipervolumen que estaba presente en SMS-EMOA por una combinación de dos indicadores: IGD+ \eqref{eq:IGDp} y la Energía-S de Riesz \eqref{eq:S_energy}. Al ser estos dos indicadores de categorías diferentes (convergencia principalmente y distribución) tendrán objetivos conflictuantes que obligarán a explorar una región distinta del espacio de estados. Estos dos indicadores se combinan por medio de la función aumentada de Tchebycheff,  qeue para un vector $\vec{x}=(x_0,x_1)$ está dada por
 
 
 \begin{equation} \label{eq:ATCH}
@@ -345,7 +345,7 @@ Sustituyendo cada uno de los indicadores tenemos
 
 donde $Z$ es un conjunto de referencia y $A$ es la aproximación al frente de Pareto.
 
-Una característica interesante de hacer esta combinación es que se obtiene un indicador que no es consistente de Pareto. Esto se debe a un teorema probado en \cite{falcon-cardonaConstructionParetoCompliantCombined2022} que asegura que si se combina un indicador débilmente consistente de Pareto (IGD+) \eqref{eq:consistente_Pareto} con uno que no lo es (Energía S), entonces se tendrá como resultado uno que no es consistente de Pareto. Entonces se deben analizar los tres casos de la Figura \ref{fig:casos} como si fuera un problema de dominancia usual en dos dimensiones.
+Una característica interesante de hacer esta combinación es que se obtiene un indicador que no es consistente de Pareto. Esto se debe a un teorema probado en \cite{falcon-cardonaConstructionParetoCompliantCombined2022} que asegura que si se combina un indicador débilmente consistente de Pareto (IGD+) \eqref{eq:consistente_Pareto} con uno que no lo es (Energía-S), entonces se tendrá como resultado uno que no es consistente de Pareto. Entonces se deben analizar los tres casos de la Figura \ref{fig:casos} como si fuera un problema de dominancia usual en dos dimensiones.
 
 \begin{figure}[H]
     \centering
@@ -354,7 +354,7 @@ Una característica interesante de hacer esta combinación es que se obtiene un 
     \label{fig:casos}
 \end{figure}
 
-En el caso 1, cada que una solución se remueve de $A$, $E_s$ se vuelve mejor. Entonces $\vec{I}_s(A,Z)$ está mutuamente no dominado contra las contribuciones de cada solución, $\vec{I}_s(A \setminus {\vec{a}},Z)$. Entonces $\text{ATCH}$ podría ser menor, igual o mayor antes y después de quitar la solución $\vec{a}$. En el caso 2, todos los vectores  $\vec{I}_s(A \setminus {\vec{a}},Z)$ están dominados por  $\vec{I}_s(A ,Z)$ por tener $E_s$ mayor, dado que $\text{ATCH}$ preserva orden\footnote{Esto quiere decir que $\text{ATCH}(\vec{I}_s(A,Z))< \text{ATCH}(\vec{I}_s(A \setminus {\vec{a}},Z))$}. Finalmente el caso 3 es una combinación de ambos. Como existe una solución que no contribuye a la convergencia del algoritmo, en cualquiera de estos 3 casos, se elimina la solución que peor contribuya a la Energía S. En el Algoritmo \ref{alg:PFI-EMOA} podemos ver el pseudocódigo de PFI-EMOA.
+En el caso 1, cada que una solución se remueve de $A$, $E_s$ se vuelve mejor. Entonces $\vec{I}_s(A,Z)$ está mutuamente no dominado contra las contribuciones de cada solución, $\vec{I}_s(A \setminus {\vec{a}},Z)$. Entonces $\text{ATCH}$ podría ser menor, igual o mayor antes y después de quitar la solución $\vec{a}$. En el caso 2, todos los vectores  $\vec{I}_s(A \setminus {\vec{a}},Z)$ están dominados por  $\vec{I}_s(A ,Z)$ por tener $E_s$ mayor, dado que $\text{ATCH}$ preserva orden\footnote{Esto quiere decir que $\text{ATCH}(\vec{I}_s(A,Z))< \text{ATCH}(\vec{I}_s(A \setminus {\vec{a}},Z))$}. Finalmente el caso 3 es una combinación de ambos. Como existe una solución que no contribuye a la convergencia del algoritmo, en cualquiera de estos 3 casos, se elimina la solución que peor contribuya a la Energía-S. En el Algoritmo \ref{alg:PFI-EMOA} podemos ver el pseudocódigo de PFI-EMOA.
 
 
 \begin{algorithm}
@@ -402,108 +402,149 @@ En el caso 1, cada que una solución se remueve de $A$, $E_s$ se vuelve mejor. E
 \end{algorithm}
 
 Iremos explicando este algoritmo línea por línea. Al inicio se requiere como parte de la entrada un vector de pesos. Esto será importante ya que en \cite{PFI} sólo se usó una combinación fija de pesos para una serie de problemas prueba (revisaremos estos problemas en el próximo capítulo). Enseguida, ya entrando en el algoritmo se inicializa la población en la línea 1 y se comienza un ciclo en la línea 2 hasta cumplir la condición de término . En este trabajo la condición de paro se estableció como las iteraciones necesarias para superar un número fijo de generaciones. Las siguientes dos líneas sin número abajo de \textbf{repeat} generan un hijo a través de operadores evolutivos y abajo se utiliza non-dominated sorting para rankear las soluciones, como en la Figura \ref{fig:nsga1}, siendo $\mathcal{R}_k$ las soluciones de la peor capa. 
-Siguiendo con la línea 3, entramos al \textbf{if} que nos pregunta si existe más de una solución en la última capa, si la hay, entonces hay que usar el estimador de densidad que se desglosa en varios casos. Primero, en las líneas 4 y 5 se normaliza el rango de los objetivos dividiendo entre el máximo y el mínimo de cada dimensión. Después, en la línea 6 se construyen los diferentes casos que corresponden a la Figura \ref{fig:casos}. Primero, vemos el conjunto de soluciones que no contribuyen al indicador de $\text{IGD}^+$, si tiene más de una solución, se elimina aquella con peor contribución a la energía de Riesz. En caso contrario se usa el estimador de densidad dado por la función aumentada de Tchebycheff \eqref{eq:ATCH}. Finalmente, vemos el caso donde la última capa sólo tuvo un elemento, entonces no hay que escoger cuál eliminar porque solo hay un candidato. En la penúltima línea se actualiza la población quitando la peor solución $\vec{a}_{\text{worst}}$ y se revisa si se alcanzó la condición de término para regresar la aproximación al frente de Pareto. 
+Siguiendo con la línea 3, entramos al \textbf{if} que nos pregunta si existe más de una solución en la última capa, si la hay, entonces hay que usar el estimador de densidad que se desglosa en varios casos. Primero, en las líneas 4 y 5 se normaliza el rango de los objetivos dividiendo entre el máximo y el mínimo de cada dimensión. Después, en la línea 6 se construyen los diferentes casos que corresponden a la Figura \ref{fig:casos}. Primero, vemos el conjunto de soluciones que no contribuyen al indicador de $\text{IGD}^+$, si tiene más de una solución, se elimina aquella con peor contribución a la Energía-S de Riesz. En caso contrario se usa el estimador de densidad dado por la función aumentada de Tchebycheff \eqref{eq:ATCH}. Finalmente, vemos el caso donde la última capa sólo tuvo un elemento, entonces no hay que escoger cuál eliminar porque solo hay un candidato. En la penúltima línea se actualiza la población quitando la peor solución $\vec{a}_{\text{worst}}$ y se revisa si se alcanzó la condición de término para regresar la aproximación al frente de Pareto. 
 
 \section{Pruebas Estadísticas y Comparación de algoritmos} \label{sec:pruebas_estadisticas}
 
+El interés principal de este trabajo es el de comparar el desempeño de distintas configuraciones de pesos en el algoritmo \ref{sec:PFI-EMOA}. Para fines prácticos, esto se puede entender como comparar el desempeño de algoritmos distintos. Así, planteareamos de manera general cómo se pueden comparar un conjunto de algoritmos que dan un resultado distinto para las mismas entradas\footnote{Estas entradas corresponden a las poblaciones iniciales y pueden ser comparadas entre sí porque se generan usando semillas aleatorias.}. Dado que los MOEAs tienen un comportamiento estocástico, tendremos que hacer muchas corridas de los algoritmos y comparar poblaciones de resultados entre sí. Es por ello que recurriremos a pruebas estadísticas para determinar si el desempeño de los algoritmos fue distinto. La manera en la que decidiremos si un algoritmo tuvo mejor desempeño que otro es usando nuevamente los inidcadores de calidad, pero ahora calculandolos sobre la población final (recordando que la salida de los MOEAs son conjuntos de aproximación al frente de Pareto).
 
-Para decidir que tan bueno es un MOEA con respecto a otro en cierto indicador, no basta con comparar directamente el indicador que obtenemos en cada iteración. Por su comportamiento estocástico, los MOEAs se tienen que comparar estadísticamente, es decir, sus poblaciones tienen que diferir significativamente la una de la otra. 
+Entonces, por cada población final, haremos el cálculo de cada uno de los indicadores que están en \ref{sec:AE} para cada corrida de cada algoritmo y los compararemos usando las pruebas estadísticas que se exponen en esta sección. Al ser muchos los indicadores donde haremos las pruebas, tendremos muchos resultados acerca de qué solución conviene dependiendo de la característica que busquemos de la solución. Es decir, tendremos resultados del tipo: El algoritmo PFI-EMOA con una confifuración de pesos $\vec{w}_1$ obtiene, de manera estadísticamente significativa, un Hipervolumen mayor al algoritmo PFI-EMOA con pesos $\vec{w}_2$ para los problemas prueba considerados.   
 
+En estos problemas, la distribución que siguen los valores de los indicadores no es conocida ya que el fenómeno es suficientemente complejo como para rastrearlo de esta manera. Así, para realizar la comparación del desempeño de los algoritmos en los diferentes indicadores tendremos que hacer uso de pruebas no paramétricas que comparen nuestras muestras. En particular usaremos la prueba de Friedman, que nos ayudará a decidir si existe una diferencia entre poblaciones. Es decir, probaremos si hay o no evidencia para rechazar la hipótesis nula: Al menos una de las muestras viene de una distribución distinta a las demás. 
 
+Además, usaremos la prueba de Wilcoxon, en la Sección \ref{sec:Wilcoxon}, para comparar uno a uno las diferentes configuraciones de los algoritmos y así poder distinguir qué distribuciones tienen mediana superior (o inferior, según si se quiere maximizar o minimizar el indicador) a los demás. De esta manera podremos decir que hay evidencia para rechazar la hipótesis nula de que una distribución no tiene mediana superior o inferior a la otra.
 
-En estos problemas, la distribución que siguen los valores de los indicadores no es conocida ya que el fenómeno es suficientemente complejo como para rastrearlo de esta manera. Así, para realizar la comparación del desempeño de los algoritmos en los diferentes indicadores tendremos que hacer uso de pruebas no paramétricas que comparen nuestras muestras. En particular usaremos la prueba de Kruskal Wallis, que  revisaremos a continuación para ver si existe una diferencia entre poblaciones. Es decir, probaremos si hay o no evidencia para rechazar la hipótesis nula: Al menos una de las muestras viene de una distribución distinta a las demás. 
-Además, usaremos la prueba de Wilcoxon, en la Sección \ref{sec:Wilcoxon}, para ver qué distribuciones tienen mediana superior o inferior (según se quiera maximizar o minimizar el indicador) a los demás. De esta manera podremos decir que hay evidencia para rechazar la hipótesis nula de que una distribución no tiene mediana superior o inferior a la otra.
+En esta sección se detallan las pruebas que usaremos más adelante para comparar el desempeño de dos algoritmos en una misma tarea. Ambas son no paramétricas ya que desconocemos la distribución del desempeño del algoritmo dados los parámetros que pondremos. Las dos pruebas que veremos en esta sección tienen su implementación en la librería de Python de  \href{https://docs.scipy.org/doc/scipy/reference/stats.html}{scipy.stats} que usaremos en el capítulo de resultados. 
 
-
-
-En esta sección se detallan las pruebas que usaremos más adelante para comparar el desempeño de dos algoritmos en una misma tarea. Ambas son no paramétricas ya que desconocemos la distribución del desempeño del algoritmo dados los parámetros que pondremos. Las dos pruebas que veremos en esta sección tienen su implementación en la librería de Python de  \href{https://docs.scipy.org/doc/scipy/reference/stats.html}{scipy.stats} que usaremos en el capítulo de resultados.
-
-
-\subsection{Kruskal-Wallis} \label{sec:Kruskal-Wallis}
-
-La prueba de Kruskal-Wallis \cite{Kruskal} es una extensión no paramétrica de la ANOVA \cite{geisserStatisticalPrinciplesExperimental1963} de un solo factor. Se utiliza cuando hay tres o más poblaciones independientes \footnote{Para dos poblaciones recibe el nombre de Mann-Whitney U.} de datos de los que nos interesa saber si provienen de la misma distribución, especialmente cuando las suposiciones de normalidad y homocedasticidad (requeridas por ANOVA) no se cumplen. En la Figura \ref{fig:kruskal} se simularon poblacionales distintas para obtener diferentes resultados en las pruebas de ANOVA y Kruskal. Cada una de las distribuciones mostradas es:
-\begin{enumerate}
-    \item Las tres poblaciones se generan de tres normales con medias $\mu_1=50, \mu_2=51, \mu_3=52$ y la misma desviación estándar $\sigma_1=\sigma_2=\sigma_3=10$.
-    \item Se generan dos normales $X_1\sim N(50,10), X_2\sim N(50,20)$ y una exponencial con la misma media $X_3\sim \text{Exp}(\lambda=50)$.
-    \item Se establece un valor de mediana, aunque la media varía caso a caso. Así, tenemos $X_1\sim N(10,1)$, $X_2 \sim \text{Exp}(10/\log 2)$, mientras que $X_3$ es una distribución bimodal que viene de dos normales cada una centrada a una distancia de 5 de la mediana establecida.
-    \item Aquí todas las distribuciones son diferentes, tanto las medias como las medianas; $X_1\sim N(50,10), X_2\sim N(70,10), X_3\sim N(90,10)$.
-\end{enumerate}
-
-Así, logramos tener 4 casos diferentes dependiendo si se rechaza o acepta la hipótesis nula de Kruskal-Wallis o ANOVA. Explicaremos más adelante por qué sucede cada caso de la Figura \ref{fig:kruskal}.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{Figuras/kruskal.pdf}
-    \caption[Prueba de Kruskal]{Ilustración de la prueba de Kruskal.}
-    \label{fig:kruskal}
-\end{figure}
+Cabe destacar que ambas pruebas tienen modificaciones cuando se toman en cuenta empates entre las diferentes poblaciones. Sin embargo, como estamos considerando una variable aleatoria de salida continua la probabilidad de coincidencias es cero así que presentamos las pruebas sin esta consideración.
 
 
-En Kruskal-Wallis la hipótesis nula \( H_0 \) es que las medianas de todas las poblaciones son iguales mientras que la hipótesis alternativa \( H_1 \) es que al menos existe una de ellas donde la mediana es distinta. Las poblaciones no necesariamente tienen que tener el mismo número de elementos.
+\subsection{Prueba de Friedman} \label{sec:Friedman}
 
-Los supuestos de la prueba son los siguientes:
+La prueba de Friedman \cite{hollanderNonparametricStatisticalMethods2015} es una prueba no paramétrica utilizada para detectar diferencias en tratamientos a través de múltiples bloques que están relacionados entre sí. Es una alternativa a la ANOVA de medidas repetidas cuando no se cumplen las suposiciones de normalidad. Se usa principalmente en diseños de poblaciones iniciales aleatorizados donde las observaciones dentro de cada bloque (o sujetos) son \textbf{dependientes}. En el contexto de este trabajo, podemos pensar en los sujetos que están relacionados como las poblaciones iniciales con las que comienza su búsqueda cada algoritmo con diferentes parámetros. Dichas inicializaciones están controladas por diferentes semillas de modo que podemos decir que están relacionadas. Por otro lado, los tratamientos que suelen formar parte de esta prueba tendrían su análogo en este trabajo en la salida de cada algoritmo; es decir, el cálculo de un indicador de calidad aplicado al conjunto de aproximación final.  
+
+Así, la prueba de Friedman asume que tenemos \( k \) algoritmos aplicados a \( n \) poblaciones iniciales. La hipótesis nula \( H_0 \) establece que los indicadores calculados de la salida de los algoritmos son iguales, mientras que la hipótesis alternativa \( H_1 \) indica que al menos una de ellas es diferente.
+
+Los supuestos de la prueba de Friedman son los siguientes:
 \begin{itemize}
-    \item La variable de respuesta es ordinal o continua. Es decir existe una cantidad mejor a otra.
-    \item Independencia. Las observaciones de cada grupo son independientes entre sí.
-    \item Distribuciones tienen formas similares: Aunque no pedimos que sean normales, para comparar los rangos necesitamos que sean distribuciones similares con, tal vez, diferentes parámetros.
-\end{itemize} 
-
-Para construir el estadístico de prueba primero se hace un ranking de todos los elementos en todos los diferentes poblaciones, es decir, se ordenan todos los elementos de menor a mayor y se le asigna su posición en el ordenamiento a cada uno de ellos, a esta cantidad se le llama el rango del individuo $i$ \footnote{En este desarrollo se presenta la deducción para el caso donde no hay empates. }. 
-
-Después se calcula el rango promedio global, que se denota como \( \bar{R} \), mediante:
-
-$$
-\bar{R} = \frac{\sum_{i=1}^{g} R_i}{N} = \frac{1 + 2 + \ldots + N}{N} = \frac{N(N + 1)/2}{N} = \frac{N + 1}{2}.
-$$
-
-
-donde 
-\begin{itemize} 
-    \item \( g \) es el número de poblaciones o grupos.
-    \item \( n_i \) es el número de observaciones en la población \( i \).
-   \item \( N =\sum_{i=1}^n n_i\) es el número total de observaciones.
-   \item \( R_i =\sum_{j=1}^{n_i} R_{ij}\) es la suma de los rangos en la población $i$-ésima.
+    \item Los datos consisten en \( n \) poblaciones iniciales, cada uno con \( k \) algoritmos distintos aplicados sobre ellas.
+    \item Las observaciones son ordinales o continuas.
 \end{itemize}
 
+Para realizar la prueba, los pasos son los siguientes:
+
+\begin{enumerate}
+    \item Asignar rangos dentro de cada población inicial. Para cada población inicial \( j \) y salida del algoritmo \( i \), se ordenan las observaciones y se les asigna un rango \( R_{ij} \).
+    \item Calcular la suma de rangos para cada salida del algoritmo \( i \):
+    \[
+        R_i = \sum_{j=1}^{n} R_{ij}
+        \]
+\item Calcular el estadístico de prueba \( Q \), que se define como:
+        \[
+            Q = \frac{12}{nk(k+1)} \sum_{i=1}^{k} \left( R_i - \frac{n(k+1)}{2} \right)^2
+            \]
+            donde \( n \) es el número de poblaciones iniciales y \( k \) es el número de algoritmos.
+        \end{enumerate}
+
+El estadístico \( Q \) sigue una distribución \( \chi^2 \) con \( k-1 \) grados de libertad bajo la hipótesis nula. La fórmula de \( Q \) se puede expresar de manera más simplificada como:
+   \[
+   Q = \frac{12}{nk(k+1)} \left[ \sum_{i=1}^{k} R_i^2 - \frac{nk(k+1)^2}{4} \right]
+   \]
+
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=\textwidth]{Figuras/friedman.pdf}
+%     \caption[Prueba de Friedman]{Ilustración de la prueba de Friedman.}
+%     \label{fig:friedman}
+% \end{figure}
 
 
-De la misma forma se define el rango promedio para cada población \(j\), \( \bar{R_j} \), se calcula como:
 
-$$
-\bar{R_j} = \frac{R_j}{n_j}.
-$$
+% \subsection{Kruskal-Wallis} \label{sec:Kruskal-Wallis}
 
-Ahora se calcula el cuadrado de la diferencia entre los rangos promedio con rango promedio global para cada población, ponderada por el tamaño de la misma, obteniendo:
+% La prueba de Kruskal-Wallis \cite{Kruskal} es una extensión no paramétrica de la ANOVA \cite{geisserStatisticalPrinciplesExperimental1963} de un solo factor. Se utiliza cuando hay tres o más poblaciones independientes \footnote{Para dos poblaciones recibe el nombre de Mann-Whitney U.} de datos de los que nos interesa saber si provienen de la misma distribución, especialmente cuando las suposiciones de normalidad y homocedasticidad (requeridas por ANOVA) no se cumplen. En la Figura \ref{fig:kruskal} se simularon poblacionales distintas para obtener diferentes resultados en las pruebas de ANOVA y Kruskal. Cada una de las distribuciones mostradas es:
+% \begin{enumerate}
+%     \item Las tres poblaciones se generan de tres normales con medias $\mu_1=50, \mu_2=51, \mu_3=52$ y la misma desviación estándar $\sigma_1=\sigma_2=\sigma_3=10$.
+%     \item Se generan dos normales $X_1\sim N(50,10), X_2\sim N(50,20)$ y una exponencial con la misma media $X_3\sim \text{Exp}(\lambda=50)$.
+%     \item Se establece un valor de mediana, aunque la media varía caso a caso. Así, tenemos $X_1\sim N(10,1)$, $X_2 \sim \text{Exp}(10/\log 2)$, mientras que $X_3$ es una distribución bimodal que viene de dos normales cada una centrada a una distancia de 5 de la mediana establecida.
+%     \item Aquí todas las distribuciones son diferentes, tanto las medias como las medianas; $X_1\sim N(50,10), X_2\sim N(70,10), X_3\sim N(90,10)$.
+% \end{enumerate}
 
-$$
-n_i (\bar{R_i} - \bar{R})^2 = n_i \left(\frac{R_i}{n_i} - \frac{N + 1}{2}\right)^2 = \frac{R_i^2}{n_i} - N (N+1) + \frac{n_i (N + 1)^2}{4}.
-$$
+% Así, logramos tener 4 casos diferentes dependiendo si se rechaza o acepta la hipótesis nula de Kruskal-Wallis o ANOVA. Explicaremos más adelante por qué sucede cada caso de la Figura \ref{fig:kruskal}.
 
-Se suman todas estas diferencias para obtener:
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=\textwidth]{Figuras/kruskal.pdf}
+%     \caption[Prueba de Kruskal]{Ilustración de la prueba de Kruskal.}
+%     \label{fig:kruskal}
+% \end{figure}
 
-$$
-\sum_{i=1}^{g} \frac{R_i^2}{n_i} - g N (N + 1) + (N + 1)^2 \sum_{i=1}^{g} \frac{n_i}{4}.
-$$
 
-Así tenemos una cantidad que se comporta como una $\Xi$ cuadrada salvo un factor de normalización \( \frac{12}{N (N + 1)} \) para obtener \( H \) el estadístico de prueba:
+% En Kruskal-Wallis la hipótesis nula \( H_0 \) es que las medianas de todas las poblaciones son iguales mientras que la hipótesis alternativa \( H_1 \) es que al menos existe una de ellas donde la mediana es distinta. Las poblaciones no necesariamente tienen que tener el mismo número de elementos.
 
-$$
-H = \frac{12}{N(N + 1)} \left(\sum_{i=1}^{g} \frac{R_i^2}{n_i} - N (N + 1)\right) + 3(N + 1).
-$$
+% Los supuestos de la prueba son los siguientes:
+% \begin{itemize}
+%     \item La variable de respuesta es ordinal o continua. Es decir existe una cantidad mejor a otra.
+%     \item Independencia. Las observaciones de cada grupo son independientes entre sí.
+%     \item Distribuciones tienen formas similares: Aunque no pedimos que sean normales, para comparar los rangos necesitamos que sean distribuciones similares con, tal vez, diferentes parámetros.
+% \end{itemize} 
 
-Y simplificando, se obtiene la Ecuación \ref{eq:Kruskal-Wallis} para $H$:
+% Para construir el estadístico de prueba primero se hace un ranking de todos los elementos en todos los diferentes poblaciones, es decir, se ordenan todos los elementos de menor a mayor y se le asigna su posición en el ordenamiento a cada uno de ellos, a esta cantidad se le llama el rango del individuo $i$ \footnote{En este desarrollo se presenta la deducción para el caso donde no hay empates. }. 
 
-\begin{equation} \label{eq:Kruskal-Wallis}
-H = \frac{12}{N(N + 1)} \sum_{i=1}^{g} \frac{R_i^2}{n_i} - 3(N + 1),
-\end{equation}
+% Después se calcula el rango promedio global, que se denota como \( \bar{R} \), mediante:
+
+% $$
+% \bar{R} = \frac{\sum_{i=1}^{g} R_i}{N} = \frac{1 + 2 + \ldots + N}{N} = \frac{N(N + 1)/2}{N} = \frac{N + 1}{2}.
+% $$
+
+
+% donde 
+% \begin{itemize} 
+%     \item \( g \) es el número de poblaciones o grupos.
+%     \item \( n_i \) es el número de observaciones en la población \( i \).
+%    \item \( N =\sum_{i=1}^n n_i\) es el número total de observaciones.
+%    \item \( R_i =\sum_{j=1}^{n_i} R_{ij}\) es la suma de los rangos en la población $i$-ésima.
+% \end{itemize}
+
+
+
+% De la misma forma se define el rango promedio para cada población \(j\), \( \bar{R_j} \), se calcula como:
+
+% $$
+% \bar{R_j} = \frac{R_j}{n_j}.
+% $$
+
+% Ahora se calcula el cuadrado de la diferencia entre los rangos promedio con rango promedio global para cada población, ponderada por el tamaño de la misma, obteniendo:
+
+% $$
+% n_i (\bar{R_i} - \bar{R})^2 = n_i \left(\frac{R_i}{n_i} - \frac{N + 1}{2}\right)^2 = \frac{R_i^2}{n_i} - N (N+1) + \frac{n_i (N + 1)^2}{4}.
+% $$
+
+% Se suman todas estas diferencias para obtener:
+
+% $$
+% \sum_{i=1}^{g} \frac{R_i^2}{n_i} - g N (N + 1) + (N + 1)^2 \sum_{i=1}^{g} \frac{n_i}{4}.
+% $$
+
+% Así tenemos una cantidad que se comporta como una $\Xi$ cuadrada salvo un factor de normalización \( \frac{12}{N (N + 1)} \) para obtener \( H \) el estadístico de prueba:
+
+% $$
+% H = \frac{12}{N(N + 1)} \left(\sum_{i=1}^{g} \frac{R_i^2}{n_i} - N (N + 1)\right) + 3(N + 1).
+% $$
+
+% Y simplificando, se obtiene la Ecuación \ref{eq:Kruskal-Wallis} para $H$:
+
+% \begin{equation} \label{eq:Kruskal-Wallis}
+% H = \frac{12}{N(N + 1)} \sum_{i=1}^{g} \frac{R_i^2}{n_i} - 3(N + 1),
+% \end{equation}
 
     
-La  \( H \) se distribuye como una distribución \( \chi^2 \) con \( g-1 \) grados de libertad. De esta forma podemos probar la hipótesis nula a una significancia de $\alpha$, rechazando si el $p$-valor es menor a $\alpha$ y aceptando si es mayor. 
+% La  \( H \) se distribuye como una distribución \( \chi^2 \) con \( g-1 \) grados de libertad. De esta forma podemos probar la hipótesis nula a una significancia de $\alpha$, rechazando si el $p$-valor es menor a $\alpha$ y aceptando si es mayor. 
 
-Podemos entender la Figura \ref{fig:kruskal} viendo que las distribuciones de los datos simulados se escogieron de modo que tuvieramos control sobre la media y la mediana de cada distribución. A ANOVA le importa la similitud entre las medias y a Kruskal-Wallis le importan los rangos. Entonces, al tomar una distribución con medias iguales y medianas diferentes obtenemos la subfigura superior derecha. Cambiando ahora la media, pero dejando la mediana igual (las lineas del boxplot están niveladas), tenemos que rechazamos ahora ANOVA (las medias son diferentes), pero aceptamos que las medianas son iguales y por lo tanto aceptamos $H_0$ para Kruskal-Wallis.
+% Podemos entender la Figura \ref{fig:kruskal} viendo que las distribuciones de los datos simulados se escogieron de modo que tuvieramos control sobre la media y la mediana de cada distribución. A ANOVA le importa la similitud entre las medias y a Kruskal-Wallis le importan los rangos. Entonces, al tomar una distribución con medias iguales y medianas diferentes obtenemos la subfigura superior derecha. Cambiando ahora la media, pero dejando la mediana igual (las lineas del boxplot están niveladas), tenemos que rechazamos ahora ANOVA (las medias son diferentes), pero aceptamos que las medianas son iguales y por lo tanto aceptamos $H_0$ para Kruskal-Wallis.
 
 
-\subsection{Wilcoxon} \label{sec:Wilcoxon}
+\subsection{Prueba de Wilcoxon} \label{sec:Wilcoxon}
 
 La prueba de Wilcoxon Signed-Rank \cite{Wilcoxon} es una prueba estadística no paramétrica que se utiliza para comparar dos muestras pareadas como vemos en la Figura \ref{fig:Wilcoxon}. Es una alternativa no paramétrica a la prueba $t$ de student \cite{geisserStatisticalPrinciplesExperimental1963} para muestras pareadas y es útil cuando no se pueden asumir distribuciones normales en la diferencia de las observaciones. 
 
@@ -517,7 +558,7 @@ La prueba de Wilcoxon Signed-Rank \cite{Wilcoxon} es una prueba estadística no 
 
 En el capítulo 4 realizaremos esta prueba para comparar algoritmos evolutivos multiobjetivo que tienen diferentes parámetros. Así, la discusión de esta prueba se da en términos de este caso particular.
 
-Supongamos que tenemos un conjunto de $n$ entradas diferentes, que llamaremos poblaciones y denotaremos $P_i, i\in\{1,2,\ldots,n\}$. Estas poblaciones se inicializan de manera aleatoria, pero para cada $i$ se hace con una semilla diferente. Las poblaciones iniciales se mapean a un número real usando dos algoritmos distintos, $A_1,A_2$ \footnote{en nuestro caso las entradas son poblaciones de individuos que se evolucionan con ayuda de un MOEA. Los $A_1,A_2$ son el mismo algoritmo sólo que con diferentes hiperparámetros. Estos algoritmos tienen como salida una aproximación del frente de Pareto y el mapeo a los números reales $A_i(P_j)$ es un indicador de calidad que se obitene de la aproximación al frente.} de modo que la salida del algoritmo son dos valores reales por cada población $A_1(P_i), A_2(P_i)$. Estos últimos resultados son dependientes porque comenzaron con la misma población, de modo que los consideramos observaciones pareadas. De este modo, obtenemos las diferencias de cada par de observaciones para obtener la Tabla \ref{tab:datos_pareados}.
+Supongamos que tenemos un conjunto de $n$ entradas diferentes, que llamaremos poblaciones y denotaremos $P_i, i\in\{1,2,\ldots,n\}$. Estas poblaciones se inicializan de manera aleatoria, pero para cada $i$ se hace con una semilla diferente. Las poblaciones iniciales se mapean a un número real usando dos algoritmos distintos, $A_1,A_2$ \footnote{En nuestro caso las entradas son poblaciones de individuos que se evolucionan con ayuda de un MOEA. Los $A_1,A_2$ son el mismo algoritmo sólo que con diferentes hiperparámetros. Estos algoritmos tienen como salida una aproximación del frente de Pareto y el mapeo a los números reales $A_i(P_j)$ es un indicador de calidad que se obtiene de la aproximación al frente.} de modo que la salida del algoritmo son dos valores reales por cada población $A_1(P_i), A_2(P_i)$. Estos últimos resultados son dependientes porque comenzaron con la misma población, de modo que los consideramos observaciones pareadas. De este modo, obtenemos las diferencias de cada par de observaciones para obtener la Tabla \ref{tab:datos_pareados}.
 
 \begin{table}[H]
     \centering
@@ -533,11 +574,11 @@ Supongamos que tenemos un conjunto de $n$ entradas diferentes, que llamaremos po
 \end{table}
 
 
-Las suposiciones de la prueba de Wilcoxon \cite{hollanderNonparametricStatisticalMethods2015} son parecidas a aquellas de la de Kruskal Wallis:
+Las suposiciones de la prueba de Wilcoxon \cite{hollanderNonparametricStatisticalMethods2015} son parecidas a aquellas de la de Friedman:
 
 \begin{itemize}
     \item Las observaciones pareadas tienen un carácter ordinal o real y los $Z_i$ son mutuamente independientes. 
-    \item Cada $Z$ viene de una distribución continua que es simétrica alrededor de una mediana común $\theta$, llamada el efecto del tratamiento. Si $F_i$ es la función de probabilida de $Z_i$, tenemos que 
+    \item Cada $Z$ viene de una distribución continua que es simétrica alrededor de una mediana común $\theta$, llamada el efecto del tratamiento. Si $F_i$ es la función de probabilidad de $Z_i$, tenemos que 
     $$ F_i(\theta+t)+F_i(\theta -t)=1, \,\, \forall t, i .$$
 \end{itemize}
 
@@ -548,7 +589,7 @@ Para realizar la prueba hacemos lo siguiente
 
 \begin{itemize}
     \item Para cada par de observaciones pareadas \(i\), se calcula la diferencia \(d_i = x_i - y_i\).
-    \item Se ordenan las diferencias absolutas \(|d_i|\) y se les asigna (al igual que en Kruskal-Wallis) rangos \(R_i\) desde el más pequeño al más grande. Si hay empates (diferencias absolutas idénticas), se asigna el rango medio.
+    \item Se ordenan las diferencias absolutas \(|d_i|\) y se les asigna (al igual que en Friedman) rangos \(R_i\) desde el más pequeño al más grande. 
     \item Se separan las diferencias en dos grupos: diferencias positivas y diferencias negativas. Calculamos las sumas de los rangos para cada grupo  y las denotamos como \(W_+\) y \(W_-\) para las diferencias positivas y negativas respectivamente. Es decir, 
     \begin{align*}
     W_+= \sum_{d_i>0} \text{rank}(d_i) +\frac{1}{2}\sum_{d_i=0}\text{rank}(d_i), \nonumber\\
@@ -569,7 +610,7 @@ Lo que medimos con la prueba es la suma de rangos totales sí que supongamos que
 \begin{table}[H]
     \centering
     \begin{tabular}{|c|c|c|c|}
-    \textbf{B} & \textbf{$(r_1,\ldots,r_B)$} & \textbf{Probabilidad de que ocurra dado $H_0$} & \textbf{T\textasciicircum{}+=\textbackslash{}sum\_\{i=1\}\textasciicircum{}B r\_i} \\ \hline
+    \textbf{B} & \textbf{$(r_1,\ldots,r_B)$} & \begin{tabular}[c]{@{}l@{}}Probabilidad de que\\ ocurra dado $H_0$\end{tabular} & $T^+=\sum_{i=1}^B r_i$ \\ \hline
     0          &                             & $\frac{1}{8}$                                  & 0                                                                                  \\
     1          & $r_1=1$                     & $\frac{1}{8}$                                  & 1                                                                                  \\
     1          & $r_1=2$                     & $\frac{1}{8}$                                  & 2                                                                                  \\
@@ -597,32 +638,65 @@ $$z= \frac{T-\frac{1}{4}N(N+1)}{\frac{1}{24}N(N+1)(2N+1)}.$$
 Cuando se quiere hacer una prueba de un lado, es decir, si alguna de las poblaciones tiene mediana mayor o menor que otra, se toma solamente la parte positiva o negativa de las diferencias. Esto será útil en los siguientes capítulos cuando comparemos algoritmos ejecutados con diferentes configuraciones de parámetros. Una diferencia importante con respecto a la prueba $t$ es que, dado que la diferencia se convierte en rangos, no importa tanto la magnitud de la misma, sólo su orden relativo, de esta forma, la prueba de Wilcoxon no es tan sensible a outliers. 
 
 
-\subsection{\textcolor{Azul}{Critical Difference Plots}}
+\subsection{Análisis post-hoc y Family-wise Error Rate} \label{sec:FWER_Bonferroni}
 
-La prueba anterior se especificó para comparaciones uno a uno. Sin embargo, en este trabajo veremos comparaciones de muchos algoritmos (muchas combinaciones de hiperparámetros). Sería útil ver cómo realizar estas comparaciones y si es posible definir una prueba para establecer un orden parcial entre el desempeño de los algoritmos. Cuando comparamos uno a uno, podríamos concluir simplemente diciendo, por ejemplo: \emph{El algoritmo 1 superó al algoritmo 2, mientras que el 4 superó al 2 y al 3, pero no se encontraron otras diferencias significativas}. Sin embargo, como se nota en \cite{demsarStatisticalComparisonsClassifiers2006a}, por el sólo hecho de hacer muchas pruebas, una proporción de ellas rechazará $H_0$, este es el carácter aleatorio de las pruebas. Este problema es conocido en estadística y se suele atacar intentando controlar el error de familia, es decir, el error de hacer al menos un error de tipo I en las comparaciones múltiples. Entonces, primero se probaría la significancia de las diferencias entre muchas poblaciones con alguna prueba como ANOVA, Kruskal-Wallis o la prueba de Friedman. 
 
-Así, podemos hacer una prueba por partes en la que primero controlamos este error de familia. Y, sólo si la prueba rechaza su hipótesis nula (es decir, existen diferencias en la población), entonces proceder con la comparación uno a uno. Después, para visualizar cuáles grupos fueron significativamente diferentes de otros y tener una idea de cuál algoritmo fue mejor realizamos el siguiente procedimiento: 
 
-\begin{enumerate}
-    \item Realizamos la prueba para controlar el error de familia. Si esta prueba nos dice que hay diferencia entre poblaciones, seguimos.
-    \item Ordenamos acuerdo a cuál haya salido superior de acuerdo a alguna medida, como su media o mediana.
-    \item Calculamos el nivel de significancia de las pruebas uno a uno y unimos con líneas aquellos grupos que no son estadísticamente significativos.
-\end{enumerate}
+En el análisis estadístico, cuando se realizan múltiples comparaciones o pruebas simultáneamente, incrementa la probabilidad de cometer errores de Tipo I (rechazar una hipótesis nula verdadera). Este fenómeno se conoce como la tasa de error familiar (FWER, por sus siglas en inglés: Family-wise Error Rate). La FWER es la probabilidad de cometer al menos un error de Tipo I entre todas las comparaciones.
 
-Este procedimiento nos da un Critical Difference plot \cite{demsarStatisticalComparisonsClassifiers2006a} como el de la Figura \ref{fig:CDP} donde vemos que se forman tres grupos entre los que no hay diferencia significativa, dados por $\{C4.5+m+cf,C4.5+m\,C4.5+cf\}, \{C4.5,C4.5+cf\} .$
+Si se realizan $m$ pruebas estadísticas independientes, cada una con un nivel de significancia $\alpha$, la probabilidad de no cometer un error de Tipo I en una cada una de las prueba por sí misma es de $1 - \alpha$. Por lo tanto, la probabilidad de no cometer ningún error de Tipo I en las $m$ pruebas es $(1 - \alpha)^m$. Así, la probabilidad de cometer al menos un error de Tipo I es el complemento de este valor:
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{Figuras/cdp.png}
-    \caption[Critical Difference Plots]{Critical Difference Plot que compara cuatro clasificadores.}
-    \label{fig:CDP}
-\end{figure}
+\begin{equation} \label{eq:FWER}
+\text{FWER} = 1 - (1 - \alpha)^m.
+\end{equation}
+
+Al aumentar $m$, esta probabilidad crece, lo que incrementa el riesgo de falsas alarmas. Existen varios métodos para controlar la FWER, entre ellos se encuentra la corrección de Bonferroni.
+
+La corrección de Bonferroni es una técnica que se considera conservadora y es usada  para ajustar los niveles de significancia y controlar el FWER. La idea básica es dividir el nivel de significancia $\alpha$ por el número total de pruebas $m$. Es decir, en lugar de utilizar $\alpha$ como el nivel de significancia para cada prueba individual, se utiliza $\alpha_{\text{Bonferroni}}$ definido como:
+
+\begin{equation} \label{eq:Bonferroni}
+\alpha_{\text{Bonferroni}} = \frac{\alpha}{m}.
+\end{equation}
+
+De esta manera, la probabilidad de cometer un error de Tipo I en cualquier prueba individual es reducida, y la probabilidad de cometer al menos un error de Tipo I en cualquiera de las $m$ pruebas se mantiene por debajo del nivel de significancia general $\alpha$.
+
+
+\subsubsection{Limitaciones de las correcciones al FWER}
+
+Es bastante debatido \cite{pernegerWhatWrongBonferroni1998}, \cite{nakagawaFarewellBonferroniProblems2004}, \cite{goemanMultipleHypothesisTesting2014}  cuando se debería de usar alguna corrección al FWER debido a que el error del que nos protege parece ser demasiado exigente. Las correcciones nos piden exigir que ninguno de los rechazos de $H_0$ sea por probabilidad mayor a $\alpha$. Esto podría hacer que rechazaramos resultados interesantes sólo por el hecho de haber realizado análisis en conjunto. Esto quiere decir que puede llevar a un incremento en los errores de Tipo II (no rechazar una hipótesis nula falsa), reduciendo así el poder estadístico del análisis. Existen otras técnicas menos conservadoras, como la corrección de Holm-Bonferroni y la corrección de Sidak. De la misma forma de acuerdo a las dos pruebas expuestas anteriormente \ref{sec:Friedman}, \ref{sec:Wilcoxon}, se podría seguir un análisis tipo \textbf{post-hoc}. En este análisis, primero se realiza la prueba de Friedman y luego, con base en el resultado de la prueba, se realizarían las comparaciones uno a uno usando la prueba de Wilcoxon. Este análisis tendría los mismos problemas expuestos anteriormente.
+
+Dadas las consideraciones expuestas en esta sección, en este trabajo presentaremos los resultados de las diferentes pruebas sin hacer alguna corrección, dejando este análisis a aplicaciones donde se requiera probar una hipótesis de manera específica.  
+
+
+
+% \subsection{\textcolor{Azul}{Critical Difference Plots}}
+
+% La prueba anterior se especificó para comparaciones uno a uno. Sin embargo, en este trabajo veremos comparaciones de muchos algoritmos (muchas combinaciones de hiperparámetros). Sería útil ver cómo realizar estas comparaciones y si es posible definir una prueba para establecer un orden parcial entre el desempeño de los algoritmos. Cuando comparamos uno a uno, podríamos concluir simplemente diciendo, por ejemplo: \emph{El algoritmo 1 superó al algoritmo 2, mientras que el 4 superó al 2 y al 3, pero no se encontraron otras diferencias significativas}. Sin embargo, como se nota en \cite{demsarStatisticalComparisonsClassifiers2006a}, por el sólo hecho de hacer muchas pruebas, una proporción de ellas rechazará $H_0$, este es el carácter aleatorio de las pruebas. Este problema es conocido en estadística y se suele atacar intentando controlar el error de familia, es decir, el error de hacer al menos un error de tipo I en las comparaciones múltiples. Entonces, primero se probaría la significancia de las diferencias entre muchas poblaciones con alguna prueba como ANOVA, Kruskal-Wallis o la prueba de Friedman. 
+
+% Así, podemos hacer una prueba por partes en la que primero controlamos este error de familia. Y, sólo si la prueba rechaza su hipótesis nula (es decir, existen diferencias en la población), entonces proceder con la comparación uno a uno. Después, para visualizar cuáles grupos fueron significativamente diferentes de otros y tener una idea de cuál algoritmo fue mejor realizamos el siguiente procedimiento: 
+
+% \begin{enumerate}
+%     \item Realizamos la prueba para controlar el error de familia. Si esta prueba nos dice que hay diferencia entre poblaciones, seguimos.
+%     \item Ordenamos acuerdo a cuál haya salido superior de acuerdo a alguna medida, como su media o mediana.
+%     \item Calculamos el nivel de significancia de las pruebas uno a uno y unimos con líneas aquellos grupos que no son estadísticamente significativos.
+% \end{enumerate}
+
+% Este procedimiento nos da un Critical Difference plot \cite{demsarStatisticalComparisonsClassifiers2006a} como el de la Figura \ref{fig:CDP} donde vemos que se forman tres grupos entre los que no hay diferencia significativa, dados por $\{C4.5+m+cf,C4.5+m\,C4.5+cf\}, \{C4.5,C4.5+cf\} .$
+
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=\textwidth]{Figuras/cdp.png}
+%     \caption[Critical Difference Plots]{Critical Difference Plot que compara cuatro clasificadores.}
+%     \label{fig:CDP}
+% \end{figure}
 
 
 
 \subsubsection{Votación y conteo de borda} \label{sec:Votacion}
 
-Si tenemos más de tres poblaciones a comparar, como es el caso en la prueba de Kruskal-Wallis, para decidir cuál de ellas tiene una media, por ejemplo, mayor, tendríamos que hacer comparaciones uno a uno de todos los pares poblacionales. Después de esto nos quedaríamos con un conjunto de victorias de ciertas poblaciones sobre otras ¿Cómo escogeríamos a un ganador desde esta situación? No siempre es el caso que podemos establecer sólo un orden parcial en el conjunto de votaciones. En particular, una elección que se puede tomar es el llamado \textbf{conteo de borda}. En este se cuentan \emph{victorias} totales que tiene una población sobre otra para determinar el ganador.
+Si tenemos más de tres poblaciones a comparar, como es el caso en la prueba de Friedman, para decidir cuál de ellas tiene una media, por ejemplo, mayor, tendríamos que hacer comparaciones uno a uno de todos los pares poblacionales. Después de esto nos quedaríamos con un conjunto de victorias de ciertas poblaciones sobre otras ¿Cómo escogeríamos a un ganador desde esta situación? No siempre es el caso que podemos establecer sólo un orden parcial en el conjunto de votaciones. 
+
+En particular, una elección que se puede tomar es el llamado \textbf{conteo de borda}. En este se cuentan \emph{victorias} totales que tiene una población sobre otra para determinar el ganador. Usaremos esta manera de indicar cuando un algoritmo tiene mejor desempeño que otro. De la misma forma que en la discusión de la Sección \ref{sec:FWER_Bonferroni}, un análisis que busque responder preguntas más específicas se puede derivar de los resultados de este trabajo. 
 
 
 

@@ -4,20 +4,20 @@
 En este capítulo se explica a detalle el procedimiento experimental que se usó para determinar si las combinaciones de diferentes pesos dan lugar a resultados significativamente diferentes bajo pruebas estadísticas.  Primero comenzamos recordando las características principales del algoritmo de PFI-EMOA y cuáles van a ser las modificaciones que haremos para explorar diferentes configuraciones de parámetros de la escalarización de Tchebycheff. Después, en la Sección \ref{sec:Proc_exp}, detallaremos el procedimiento experimental seguido para obtener los resultados. La siguiente parte del capítulo, la Sección \ref{sec:Marco_Exp}, detalla todos los valores usados en los diferentes experimentos realizados; es decir, cuántas combinaciones de pesos se usaron, cuántas corridas por algoritmo, en cuáles problemas, con cuántos objetivos, con cuántas variables de decisión, el número de evaluaciones de los algoritmos evolutivos, etc. Finalmente se concluye el capítulo en la Sección \ref{sec:Resultados}, detallando los resultados obtenidos así como algunas visualizaciones de agrupaciones de datos interesantes. En particular, se muestra el desempeño (conteo de borda) de cada combinación de pesos, conforme se aumenta el número de dimensiones y para cada indicador diferente. 
 
 
-Como mencionamos anteriormente en la Sección \ref{sec:PFI-EMOA}, el algoritmo en el que estamos basándonos \cite{PFI} emplea non-dominated sorting para decidir qué solución eliminar, sin embargo, cuando no existe un candidato obvio (porque hay varios en el último nivel) se recurre al uso de indicadores de calidad. En este algoritmo se ocupan dos indicadores que, sólo por el hecho de medir cosas diferentes, van a tener objetivos conflictivos; estos dos indicadores son IGD+ (revisado en la Sección \ref{sec:IGDp}) y la Energía S de Riesz (revisada en la Sección \ref{sec:S-Energy}). 
+Como mencionamos anteriormente en la Sección \ref{sec:PFI-EMOA}, el algoritmo en el que estamos basándonos \cite{PFI} emplea non-dominated sorting para decidir qué solución eliminar, sin embargo, cuando no existe un candidato obvio (porque hay varios en el último nivel) se recurre al uso de indicadores de calidad. En este algoritmo se ocupan dos indicadores que, sólo por el hecho de medir cosas diferentes, van a tener objetivos conflictivos; estos dos indicadores son IGD+ (revisado en la Sección \ref{sec:IGDp}) y la Energía-S de Riesz (revisada en la Sección \ref{sec:Energía-S}). 
 
 
 \section{Procedimiento de experimentación con diferentes pesos} \label{sec:Proc_exp}
 
-Como se mencionó en la Sección \ref{sec:PFI-EMOA}, el algoritmo PFI-EMOA \cite{PFI} realiza una escalarización constante de los dos indicadores de calidad (Energía S de Riesz e IGD+) para procurar que la solución no se estanque en convergencia ni tampoco en distribución. La forma de la escalarización está dada por la función aumentada de Tchebycheff dada en la Ecuación \ref{eq:tchebychev}.
+Como se mencionó en la Sección \ref{sec:PFI-EMOA}, el algoritmo PFI-EMOA \cite{PFI} realiza una escalarización constante de los dos indicadores de calidad (Energía-S de Riesz e IGD+) para procurar que la solución no se estanque en convergencia ni tampoco en distribución. La forma de la escalarización está dada por la función aumentada de Tchebycheff dada en la Ecuación \ref{eq:tchebychev}.
 
 \begin{equation} \label{eq:ATCH2}
     \text{ATCH}_{\vec{w}}=\max_{i=0,1} \{w_ix_i\}+\alpha (x_0+x_1),  
 \end{equation}
 
-donde $x_0$ sería el IGD+ y $x_1$ la energía S de Riesz en PFI-EMOA. Además los pesos son tales que $ w_0+w_1=1$ de modo que podemos entender la razón entre ambos como la importancia que le estamos dando a cada indicador y por lo tanto a cada objetivo de ese indicador. Por ejemplo, si $w_0=0.4$ y $w_1=0.6$ podríamos decir, a grandes rasgos, que estamos dando 60\% de importancia a promover la diversidad y 40\% a promover la convergencia.   
+donde $x_0$ sería el IGD+ y $x_1$ la Energía-S de Riesz en PFI-EMOA. Además los pesos son tales que $ w_0+w_1=1$ de modo que podemos entender la razón entre ambos como la importancia que le estamos dando a cada indicador y por lo tanto a cada objetivo de ese indicador. Por ejemplo, si $w_0=0.4$ y $w_1=0.6$ podríamos decir, a grandes rasgos, que estamos dando 60\% de importancia a promover la diversidad y 40\% a promover la convergencia.   
 
-En \cite{PFI} se usaron diferentes escalarizaciones constantes para los problemas dependiendo del número de objetivos del problema a resolver. En particular, se usó $\vec{w}=(\frac{1}{2},\frac{1}{2})$ para MOPs de dos y tres objetivos, mientras que para mayor número de objetivos se usó $\vec{w}=(\frac{9}{10},\frac{1}{10})$. Esta decisión se realizó porque cuando se incrementa el número de objetivos, el número de soluciones no dominadas incrementa exponencialmente (como se discutió en la Sección \ref{sec:QIs}). En este caso la energía S de Riesz puede recompensar soluciones con poco grado de convergencia. Al incrementar la prioridad que se le da a IGD+ se debería incrementar la presión de selección. 
+En \cite{PFI} se usaron diferentes escalarizaciones constantes para los problemas dependiendo del número de objetivos del problema a resolver. En particular, se usó $\vec{w}=(\frac{1}{2},\frac{1}{2})$ para MOPs de dos y tres objetivos, mientras que para mayor número de objetivos se usó $\vec{w}=(\frac{9}{10},\frac{1}{10})$. Esta decisión se realizó porque cuando se incrementa el número de objetivos, el número de soluciones no dominadas incrementa exponencialmente (como se discutió en la Sección \ref{sec:QIs}). En este caso la Energía-S de Riesz puede recompensar soluciones con poco grado de convergencia. Al incrementar la prioridad que se le da a IGD+ se debería incrementar la presión de selección. 
 
 En este trabajo se extendió el análisis de \cite{PFI} utilizando diferentes combinaciones de pesos en \eqref{eq:ATCH} con el objetivo de explorar qué sucede cuando se le da un peso distinto a cada uno de los indicadores. Para comparar los resultados se usaron conjuntos de problemas prueba usados frecuentemente en el campo de optimización multiobjetivo debido a que presentan diferentes retos para que los algoritmos encuentren una buena aproximación al frente de Pareto. En particular se usaron 2 familias de problemas estándar en el campo de optimización multiobjetivo. Estos problemas prueba tienen las propiedad de ser escalables (se pueden definir para cualquier número de objetivos) y además presentan diferentes retos para encontrar buenas aproximaciones al frente de Pareto. El primer conjunto de problemas tiene el prefijo WFG (Walking Fishing Group) y fue presentada por primera vez en \cite{hubandScalableMultiobjectiveTest2005}. El segundo conjunto de problemas  tiene el prefijo de DTLZ y  fue presentada por primera vez en \cite{debScalableMultiobjectiveOptimization2002}. El desempeño de cada configuración de cada algoritmo se evalúa en cada problema prueba usando indicadores de calidad de la solución que arroja cada uno de ellos. Por ejemplo, para la combinación de $w_0=0.4$ y $w_1=0.6$ se deja correr el algoritmo hasta que se cumple su condición de paro y a la población resultante se le calculan uno de los indicadores de calidad presentes en la tabla \ref{Tabla:QIs}. Como cada uno de estos indicadores expresa una característica diferente de la solución, el tomador de decisiones tendría que escoger cuál de estas cantidades quisiera optimizar para tener una solución más cercana a sus preferencias. Nuestro objetivo es mostrar que existen diferencias para algunos de estos indicadores medidos sobre las poblaciones finales de los diferentes algoritmos (combinaciones de peso) de modo que podemos escoger una combinación específica de pesos si buscamos maximizar un indicador en particular.  
 Así, para cada problema de prueba dado en la Tabla \ref{Tabla:problema_prueba}, se siguieron los pasos que se explican a continuación:
@@ -36,7 +36,7 @@ Así, para cada problema de prueba dado en la Tabla \ref{Tabla:problema_prueba},
     \item Cada una de las combinaciones de pesos se ejecuta un número $n_{runs}=10$ de veces con distintas configuraciones aleatorias de su población inicial. La inicialización está controlada por un conjunto de semillas fijas\footnote{El conjunto de semillas usadas se encuentra en el Apéndice \ref{sec:Apendice_semilla}.}, de esta forma se puede garantizar la reproducibilidad de los resultados.  
 
     \item Después, se procede al cálculo de los indicadores de calidad de cada población. Los indicadores que se trataron en este trabajo se pueden ver en la Tabla \ref{Tabla:QIs} que muestra cada uno de los indicadores junto su categoría principal de las revisadas en la Figura \ref{fig:carac_deseables_aprox}.
-    \item Finalmente, después de realizar el cálculo de todos los indicadores de calidad, se realiza un análisis estadístico para determinar si tiene algún efecto el cambiar los pesos de la escalarización y, si lo tiene, cuál es el mejor y en qué medida. Esto se realiza por medio de las pruebas estadísticas de Kruskal-Wallis (para la parte de ver diferencias) y usando Wilcoxon como análisis post-hoc para ver cuáles de ellas son mejores a las otras.     
+    \item Finalmente, después de realizar el cálculo de todos los indicadores de calidad, se realiza un análisis estadístico para determinar si tiene algún efecto el cambiar los pesos de la escalarización y, si lo tiene, cuál es el mejor y en qué medida. Esto se realiza por medio de las pruebas estadísticas de Friedman (para la parte de ver diferencias) y usando Wilcoxon como análisis post-hoc para ver cuáles de ellas son mejores a las otras.     
 \end{enumerate}
 
 
@@ -46,7 +46,7 @@ Así, para cada problema de prueba dado en la Tabla \ref{Tabla:problema_prueba},
     \textbf{Indicador} & \textbf{Categoría principal} \\ \hline
     \hyperref[sec:IGDp]{IGD+}      & Convergencia                  \\
     \hyperref[sec:R2]{R2}         & Convergencia                  \\
-    \hyperref[sec:S-Energy]{Energía S}    & Diversidad                   \\
+    \hyperref[sec:Energía-S]{Energía-S}    & Diversidad                   \\
     \hyperref[sec:Epsilonp]{$\epsilon +$}       & Convergencia                  \\
     \hyperref[sec:IGD]{IGD}       & Convergencia                  \\
     \hyperref[sec:SPD]{SPD}        & Diversidad                   \\
@@ -169,37 +169,37 @@ Para cada problema y con el objetivo de poder detectar errores en el código y c
 
 \subsection{Pruebas Estadísticas}
 
-Como se explicó en la Sección \ref{sec:pruebas_estadisticas}, para saber si un algoritmo tiene un desempeño diferente en un indicador dado usaremos la prueba de Kruskal-Wallis \ref{sec:Kruskal-Wallis}. Algunos resultados agregados de este procedimiento se pueden ver en las siguientes dos Figuras. En la primera imagen de la Figura \ref{fig:KW_dim_IGDp} se usó el algoritmo con IGD+ mientras que en la Figura \ref{fig:KW_dim_R2} R2. Podemos ver que en R2 existen mucho menos diferencias de acuerdo a Kruskal-Wallis.   La prueba sólo indica si hay una diferencia significativa entre al menos una de las observaciones con el resto. Vemos que importa mucho ajustar los pesos para indicadores como IGD+, HV, IGD y en menor medida para S-energy. Vemos que para dos dimensiones parece importar menos que pesos escojamos para el desempeño de todos los indicadores.
+Como se explicó en la Sección \ref{sec:pruebas_estadisticas}, para saber si un algoritmo tiene un desempeño diferente en un indicador dado usaremos la prueba de Friedman \ref{sec:Friedman}. Algunos resultados agregados de este procedimiento se pueden ver en las siguientes dos Figuras. En la primera imagen de la Figura \ref{fig:Fr_dim_IGDp} se usó el algoritmo con IGD+ mientras que en la Figura \ref{fig:Fr_dim_R2} R2. Podemos ver que en R2 existen mucho menos diferencias de acuerdo a Friedman.   La prueba sólo indica si hay una diferencia significativa entre al menos una de las observaciones con el resto. Vemos que importa mucho ajustar los pesos para indicadores como IGD+, HV, IGD y en menor medida para Energía-S. Vemos que para dos dimensiones parece importar menos que pesos escojamos para el desempeño de todos los indicadores.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{Figuras/KW_obj_indconv_IGD+.pdf}
-    \caption[Kruskal-Wallis IGD+]{Diferencias cuando el indicador de convergencia de ATCH es IGD+.}
-    \label{fig:KW_dim_IGDp}
+    \includegraphics[width=\textwidth]{Figuras/Friedman_obj_indconv_IGD+.pdf}
+    \caption[Friedman IGD+]{Diferencias cuando el indicador de convergencia de ATCH es IGD+.}
+    \label{fig:Fr_dim_IGDp}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{Figuras/KW_obj_indconv_R2.pdf}
-    \caption[Kruskal-Wallis R2]{Diferencias cuando el indicador de convergencia de ATCH es R2.}
-    \label{fig:KW_dim_R2}
+    \includegraphics[width=\textwidth]{Figuras/Friedman_obj_indconv_R2.pdf}
+    \caption[Friedman R2]{Diferencias cuando el indicador de convergencia de ATCH es R2.}
+    \label{fig:Fr_dim_R2}
 \end{figure}
 
 
-De la misma forma, en la Figura \ref{fig:KW_conv_dist_IGDp} hacemos una agregación por categoría de Indicador para el caso donde el indicador de convergencia en el estimador de densidad es IGD+, mientras que para R2 tenemos la Figura \ref{fig:KW_conv_dist_R2}. Nuevamente observamos como el algoritmo de IGD+ presenta más sensibilidad a la elección de parámetros. Basándonos en la clasificación de la Tabla \ref{Tabla:QIs} separamos los problemas para ver si se va volviendo más importante la selección de $w_0$ conforme aumentamos la dimensión. Vemos que el número de objetivos parece importar un poco más para los indicadores convergencia y obtenemos el mismo resultado de la figura anterior, en el sentido en el que para 2 objetivos no parece importar mucho la escalarización que usemos.
+De la misma forma, en la Figura \ref{fig:Friedman_Diferencia_por_categoria_IGD} hacemos una agregación por categoría de Indicador para el caso donde el indicador de convergencia en el estimador de densidad es IGD+, mientras que para R2 tenemos la Figura \ref{fig:Friedman_Diferencia_por_categoria_R2}. Nuevamente observamos como el algoritmo de IGD+ presenta más sensibilidad a la elección de parámetros. Basándonos en la clasificación de la Tabla \ref{Tabla:QIs} separamos los problemas para ver si se va volviendo más importante la selección de $w_0$ conforme aumentamos la dimensión. Vemos que el número de objetivos parece importar un poco más para los indicadores convergencia y obtenemos el mismo resultado de la figura anterior, en el sentido en el que para 2 objetivos no parece importar mucho la escalarización que usemos.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{Figuras/KW_Diferencia_por_categoria_IGD+.pdf}
-    \caption[Kruskal-Wallis por categoría para IGD+.]{Kruskal-Wallis por categoría de indicadores de acuerdo a la Tabla \ref{Tabla:QIs} cuando el indicador de convergencia de ATCH es IGD+.}
-    \label{fig:KW_conv_dist_IGDp}
+    \includegraphics[width=\textwidth]{Figuras/Friedman_Diferencia_por_categoria_IGD+.pdf}
+    \caption[Friedman por categoría para IGD+.]{Friedman por categoría de indicadores de acuerdo a la Tabla \ref{Tabla:QIs} cuando el indicador de convergencia de ATCH es IGD+.}
+    \label{fig:Friedman_Diferencia_por_categoria_IGD}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{Figuras/KW_Diferencia_por_categoria_R2.pdf}
-    \caption[Kruskal-Wallis por categoría para R2.]{Kruskal-Wallis por categoría de que indicador usamos de acuerdo a la Tabla \ref{Tabla:QIs} cuando el indicador de convergencia de ATCH es R2.}
-    \label{fig:KW_conv_dist_R2}
+    \includegraphics[width=\textwidth]{Figuras/Friedman_Diferencia_por_categoria_R2.pdf}
+    \caption[Friedman por categoría para R2.]{Friedman por categoría de que indicador usamos de acuerdo a la Tabla \ref{Tabla:QIs} cuando el indicador de convergencia de ATCH es R2.}
+    \label{fig:Friedman_Diferencia_por_categoria_R2}
 \end{figure}
 
 
@@ -222,7 +222,7 @@ Podemos obtener el número de las victorias de cada uno de los valores si simple
     \label{fig:borda_problema}
 \end{figure}
 
-Vemos de la Figura \ref{fig:borda_problema} que a mayor peso suele haber más victorias, sin embargo, el valor de 0.7 parece haber encontrado un caso interesante en el que un mayor énfasis en la energía S ayuda a mejorar las victorias en un indicador de convergencia como el Hipervolumen. 
+Vemos de la Figura \ref{fig:borda_problema} que a mayor peso suele haber más victorias, sin embargo, el valor de 0.7 parece haber encontrado un caso interesante en el que un mayor énfasis en la Energía-S ayuda a mejorar las victorias en un indicador de convergencia como el Hipervolumen. 
 
 \subsection{Agregación por número de objetivos}
 
@@ -272,7 +272,7 @@ En esta sección se realizan agregaciones por número de objetivos de todos los 
 
 
 Es importante destacar las diferencias en escala de los dos algoritmos. Claramente en todas las Figuras \ref{fig:borda_obj_2}, \ref{fig:borda_obj_3}, \ref{fig:borda_obj_4}, \ref{fig:borda_obj_5}, \ref{fig:borda_obj_6} y  \ref{fig:borda_obj_7} hay menos proporción de victorias del algoritmo de R2 y parecen no seguir ningún patrón para algún numero de objetivos. Así, la discusión que sigue se hace tomando en cuenta sólo a los valores del algoritmo de IGD+. 
-Parece haber una preferencia para $w_0$ grande en dimensiones 3 a 5, notamos como las victorias van ascendiendo de forma monótona conforme le damos más peso a el IGD+ sobre la energía S. Sin embargo, para 2,6 y 7 no es tan claro que es mejor darle prioridad al indicador IGD+. Esto parece ir en contra de lo dicho en \cite{PFI} donde se escogió un $w_0$ mayor para mayores dimensiones bajo el suspuesto de que el indicador de diversidad podría provocar que se estancara la convergencia de la aproximación. Sin embargo, como hemos agrupado todos los indicadores esto también podría ser efecto de que los indicadores de diversidad tienden a ganar más conforme aumentamos los objetivos. Para explorar las consecuencias de este párrafo miraremos ahora una agregaciones por indicadores.
+Parece haber una preferencia para $w_0$ grande en dimensiones 3 a 5, notamos como las victorias van ascendiendo de forma monótona conforme le damos más peso a el IGD+ sobre la Energía-S. Sin embargo, para 2,6 y 7 no es tan claro que es mejor darle prioridad al indicador IGD+. Esto parece ir en contra de lo dicho en \cite{PFI} donde se escogió un $w_0$ mayor para mayores dimensiones bajo el suspuesto de que el indicador de diversidad podría provocar que se estancara la convergencia de la aproximación. Sin embargo, como hemos agrupado todos los indicadores esto también podría ser efecto de que los indicadores de diversidad tienden a ganar más conforme aumentamos los objetivos. Para explorar las consecuencias de este párrafo miraremos ahora una agregaciones por indicadores.
 
 \subsection{Agregación por Indicador}
 
@@ -329,7 +329,7 @@ En el caso de IGD, vemos en la Figura \ref{fig:borda_igd} que no se observa un c
 \begin{figure} [H]
     \centering
     \includegraphics[width=\textwidth]{Figuras/borda_obj_ind_s-energy.pdf}
-    \caption[Conteo de borda IGD+]{Victorias promedio por problema usando al indicador de \textbf{S-Energy} conforme cambiamos los pesos de $w_0$ para todas las dimensiones.}
+    \caption[Conteo de borda IGD+]{Victorias promedio por problema usando al indicador de \textbf{Energía-S} conforme cambiamos los pesos de $w_0$ para todas las dimensiones.}
     \label{fig:borda_senergy}
 \end{figure}
 
@@ -342,7 +342,7 @@ En el caso de IGD, vemos en la Figura \ref{fig:borda_igd} que no se observa un c
 
 
 
-Para los indicadores de diversidad, en las Figuras \ref{fig:borda_senergy} y \ref{fig:borda_spd}, vemos que tenemos el comportamiento esperado para SPD, es decir, decrece el número de victorias de forma monótona conforme aumentamos el peso al indicador de convergencia. Sin embargo, la energía S parece tener un comportamiento opuesto al que esperaríamos, siguiendo más bien a los indicadores de convergencia. Este resultado es muy extraño ya que el algoritmo prioriza menos el indicador de SPD mientras más aumentamos $w_0$. Es decir, parece que para mejorar la Energía S de nuestra aproximación final, no podríamos enfocarnos en mejorarla paso a paso. No podemos dar una explicación satisfactoria de porqué ocurre, pero sería interesante investigarlo en un trabajo futuro.
+Para los indicadores de diversidad, en las Figuras \ref{fig:borda_senergy} y \ref{fig:borda_spd}, vemos que tenemos el comportamiento esperado para SPD, es decir, decrece el número de victorias de forma monótona conforme aumentamos el peso al indicador de convergencia. Sin embargo, la Energía-S parece tener un comportamiento opuesto al que esperaríamos, siguiendo más bien a los indicadores de convergencia. Este resultado es muy extraño ya que el algoritmo prioriza menos el indicador de SPD mientras más aumentamos $w_0$. Es decir, parece que para mejorar la Energía-S de nuestra aproximación final, no podríamos enfocarnos en mejorarla paso a paso. No podemos dar una explicación satisfactoria de porqué ocurre, pero sería interesante investigarlo en un trabajo futuro.
 
 % \begin{itemize}
 %     \item Mostrar diferentes visualizaciones
