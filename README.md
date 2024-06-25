@@ -1,5 +1,4 @@
-Tesis UNAM
-=============
+# <!-- Tesis UNAM
 
 Plantilla de Tesis en LaTeX para las facultades de la UNAM.
 
@@ -9,9 +8,7 @@ Based on Harish Bhanderi's PhD/MPhil template, then Uni Cambridge (http://www-h.
 Corrected and extended in 2007 by Jakob Suckale, then MPI-iCBG PhD programme
 and made available through OpenWetWare.org - the free biology wiki. Adapted to UNAM by Jesús Velázquez
 
-
-Lista de paquetes
------------------
+## Lista de paquetes
 
 Recomiendo tener la opción "Install packages on the fly" de su distribución de LaTeX, activada. La lista de paquetes usados en la plantilla es:
 
@@ -34,24 +31,22 @@ Recomiendo tener la opción "Install packages on the fly" de su distribución de
     \usepackage[nottoc]{tocbibind}
     \usepackage{titlesec}
 
-Portada
------------
+## Portada
+
 Existen dos versiones de la portada, una en color negro y otra azul y oro. Para escoger la portada en negro, hay que descomentar la línea:
-    \portadafalse
-y comentar la línea 
-    \portadatrue
-    
+\portadafalse
+y comentar la línea
+\portadatrue
+
 Los datos van en los siguientes campos:
-    \title{Título de la tesis}
-    \author{Nombres Apellido1 Apellido2} 
-    \facultad{Facultad de Algunacosa}                
-    \degree{Ingenierx/Licenciadx en Algo}
-    \director{Dr. Emmet L. Brown}               
-    \degreedate{2112}                           
-    \lugar{Ciudad de México}       
-    
-    
-  
+\title{Título de la tesis}
+\author{Nombres Apellido1 Apellido2}
+\facultad{Facultad de Algunacosa}  
+ \degree{Ingenierx/Licenciadx en Algo}
+\director{Dr. Emmet L. Brown}  
+ \degreedate{2112}  
+ \lugar{Ciudad de México}
+
 Y el escudo de la facultad va en el campo \escudofacultad{ } donde se debe incluir la ruta y el nombre de la imagen correspondiente. Actualmente, la carpeta Latex/Classes/Escudos cuenta con los siguientes escudos:
 
     "fi_azul" Facultad de ingenieria en color azul
@@ -61,10 +56,8 @@ Y el escudo de la facultad va en el campo \escudofacultad{ } donde se debe inclu
 
 Se agradecen sus aportaciones de escudos a jebus.velazquez@gmail.com o a este Git.
 
+## Opciones para el posgrado
 
-
-Opciones para el posgrado
---------
 Para empezar, se debe tener el comando
 
     \posgradotrue
@@ -73,13 +66,13 @@ La portada tiene dos nuevos elementos: programa y campo, rellenar al gusto
 
     \programa{Programa de Maestría y Doctorado en XXX}
     \campo{Campo de Conocimiento}
-    
+
 El siguiente comando activa la opción de poner hasta dos tutores que conformen el comité tutor
 
     \comitetrue
     \ctutoruno{Nombre 1}
     \ctutoruno{Nombre 2}
-    
+
 Para los datos del jurado asignado, se tiene
 
     \presidente{Nombre}
@@ -88,30 +81,28 @@ Para los datos del jurado asignado, se tiene
     \supuno{Suplente 1}
     \supdos{Suplente 2}
     \institucion{el lugar donde se hizo la tesis}
-    
-    
-Compilación
------------
+
+## Compilación
+
 Por el momento, sólo funciona si compilan con "PDFLaTeX", aún no tiene funcionalidad completa con otros compiladores.
 
-Cambiar colores
---------
+## Cambiar colores
+
 En el archivo \Latex\Macros\MacroFile1.tex, se pueden cambiar los valores de RGB del azul y oro, modificando estas lineas:
 
     \definecolor{Azul}{RGB}{0,3,84}
     \definecolor{Oro}{RGB}{137,118,75}
-    
+
 Es importante conservar los nombres de las variables 'Azul' y 'Oro', para evitar hacer más cambios. Solo modifica los valores de RGB.
 
-Warnings
---------
+## Warnings
+
 Marca varias advertencias al compilar, varias de ellas tienen que ver con que el paquete Blindtext no tiene funcionalidad para la lengua española, este paquete únicamente se usa para rellenar la plantilla con texto de ejemplo, por lo que al remover los comandos \blindtext se corrige.
 
 Si les da una advertencia de referencias no definidas, compilen el archivo "tesis.tex" con BibTeX.
 
 Las adevrtencias de fuera de margen son de la portada.
 
+## Clase de la UMSNH
 
-Clase de la UMSNH
---------
-Cambiar `\documentclass[twoside,11pt]{Latex/Classes/PhDthesisPSnPDF}` por `\documentclass[twoside,11pt]{Latex/Classes/thesisUMSNH}`
+Cambiar `\documentclass[twoside,11pt]{Latex/Classes/PhDthesisPSnPDF}` por `\documentclass[twoside,11pt]{Latex/Classes/thesisUMSNH}` -->
