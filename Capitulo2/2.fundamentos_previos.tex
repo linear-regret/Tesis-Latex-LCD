@@ -22,7 +22,7 @@ Atender un problema únicamente desde una perspectiva SOP puede resultar en una 
 
 Definiremos formalmente los componentes de un MOP en la Sección \ref{sec:Dominancia_Pareto}, explorando cómo este enfoque puede proporcionar soluciones más completas y realistas a problemas complejos. Después, en la Sección \ref{sec:clasif_MOO} explicaremos una clasificación de algoritmos multiobjetivo en términos generales. Luego, definiremos escalarizaciones comúnes que también usaremos para definir el algoritmo usado en este trabajo en la Sección \ref{sec:Escalarizaciones}.
 
-Concluiremos el capítulo en la Sección \ref{sec:AE}, explicando los algoritmos evolutivos que usaremos en este trabajo para encontrar encontrar una solución a un MOP (los algoritmos son llamados MOEAs por sus siglas en inglés). 
+Concluiremos el capítulo en la Sección \ref{sec:AE}, explicando los algoritmos evolutivos que usaremos en este trabajo para encontrar encontrar una solución a un MOP (los algoritmos son llamados EMOAs por sus siglas en inglés). 
 
 Para tratar este problema desde una aplicación específica a ciencia de datos tomaremos el siguiente ejemplo de selección de características en un problema de clasificación:
 
@@ -303,12 +303,12 @@ El Algoritmo \ref{alg:EA} sigue los pasos descritos a continuación: El proceso 
 
 Una distinción importante que hay que realizar para algoritmos evolutivos es cuando en cada paso de selección de población, se retienen los mejores individuos de la generación actual o si se sustituyen completamente con sus descendientes. Al primer tipo de algoritmos se les conoce como \textbf{elitistas} y los otros son conocidos como \textbf{no-elitistas}. Se les suele distinguir por la siguiente notación $(\mu+\lambda)$ significa que los hijos competirán por $\mu$ lugares (es decir es elitista) mientras que la notación $(\mu,\lambda)$ significa que se sustituirán los $\mu$ padres con $\lambda$ hijos. La idea detrás de los algoritmos elitistas es no perder información valiosa que se haya obtenido a lo largo del proceso de búsqueda, en este sentido podría ser considerado como una parte más de explotación sin llegar a enfocarse mucho en una parte del espacio de búsqueda. Sólo manteniendo la referencia de que en esa parte del espacio había una avenida que vale la pena explorar con operadores de mutación y cruza que fomentan la exploración.
     
-Los algoritmos evolutivos se han usado para resolver problemas multiobjetivo por su enfoque en poblaciones y aproximaciones en casos donde no se puede encontrar una solución analítica. El primer algoritmo evolutivo multiobjetivo (MOEA por sus siglas en inglés) fue dado por David Schaeffer en 1984 en su tesis doctoral \cite{schafferMultipleObjectiveOptimization1984}, su propuesta llamada VEGA (Vector Evaluation Genetic Algorithm) y pretendía resolver problemas de aprendizaje de máquina.
+Los algoritmos evolutivos se han usado para resolver problemas multiobjetivo por su enfoque en poblaciones y aproximaciones en casos donde no se puede encontrar una solución analítica. El primer algoritmo evolutivo multiobjetivo (EMOA por sus siglas en inglés) fue dado por David Schaeffer en 1984 en su tesis doctoral \cite{schafferMultipleObjectiveOptimization1984}, su propuesta llamada VEGA (Vector Evaluation Genetic Algorithm) y pretendía resolver problemas de aprendizaje de máquina.
 
 En el Ejemplo \ref{ex:Selecc} que se ha estado revisando de hacer una selección de características de un problema de clasificación  ha sido abordado usando algoritmos evolutivos desde 1985 \cite{SIEDLECKI1989335} aunque en este caso se pretendía como un problema SOP con una restricción en el número de columnas. 
 
 
-Para definir un MOEA basta cambiar la definición de la función de selección $\phi$ en el algoritmo evolutivo usual presentada en el Algoritmo \ref{alg:EA}. Esta función es la de aptitud, que ahora en el caso multiobjetivo, tendrá que ser evaluada en muchos objetivos. Así tenemos que pasamos de $\phi:I\rightarrow \mathbb{R}$ a
+Para definir un EMOA basta cambiar la definición de la función de selección $\phi$ en el algoritmo evolutivo usual presentada en el Algoritmo \ref{alg:EA}. Esta función es la de aptitud, que ahora en el caso multiobjetivo, tendrá que ser evaluada en muchos objetivos. Así tenemos que pasamos de $\phi:I\rightarrow \mathbb{R}$ a
 
 $$\phi:I\rightarrow \mathbb{R}^{n_{obj}}, \quad n_{obj}>1.$$
 
@@ -318,8 +318,8 @@ Podemos ver una descripción pictórica en la Figura \ref{fig:MOEA_EA}.
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{Figuras/MOEA_EA.png}
-    \caption[MOEAs vs EAs]{Diferencia entre los procedimientos para uno a) y múltiples objetivos b). La diferencia es la transformación y evaluación vectorial. Imagen traducida de \cite{coelloEvolutionaryAlgorithmsSolving}.}
-    \label{fig:MOEA_EA}
+    \caption[EMOAs vs EAs]{Diferencia entre los procedimientos para uno a) y múltiples objetivos b). La diferencia es la transformación y evaluación vectorial. Imagen traducida de \cite{coelloEvolutionaryAlgorithmsSolving}.}
+    \label{fig:EMOA_EA}
 \end{figure}
 
 
