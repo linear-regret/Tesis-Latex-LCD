@@ -1,0 +1,66 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{amssymb, amsmath}
+\usepackage{url}
+
+\pagestyle{empty}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Do NOT modify the dimensions of the page
+\setlength{\topmargin}{-0.3in}
+\setlength{\textheight}{9.9in}
+\setlength{\oddsidemargin}{-0.5in}
+\setlength{\textwidth}{7.5in}
+% Do NOT modify the dimensions of the page
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% No paragraph indent or paragraph skip
+\parindent=0pt \parskip=0pt
+
+
+
+\begin{document}
+
+\centerline{\bf On Objective Reduction of Many-objective Optimization by Means of Performance Indicators}
+
+\vspace{12pt}
+
+\centerline{ {\bf Author 1$^{\rm a}$,  {\bf Author 2$^{\rm b}$} } }
+
+\vspace{12pt}
+
+\centerline{$^{\rm a}$Department Institution A}
+\centerline{Institution A}
+\centerline{Address}
+\centerline{email}
+
+\vspace{12pt}
+
+\centerline{$^{\rm b}$Department Institution B}
+\centerline{Institution B}
+\centerline{Address}
+\centerline{email}
+
+\vspace{12pt}
+\vspace{12pt}
+
+% Content for the abstract. A figure can be added here and the whole description
+% for the idea that will be presented at NEO.
+
+% In the field of Multiobjective Optimization Problems several Evolutionary Algorithms have proven to be an effective choice. However, when the number of objectives starts growing beyond four traditional techniques stop being as effective. This is in part due to the fact that the non-dominated region grows so much that the space in which to find solutions that dominate previous ones gets smaller. Additionaly, simple transformations of some Pareto fronts are sufficient to change the performance of some Multiobjective Optimization Evolutionary Algorithms (MOEAs). A way to solve this issue is to use Indicator Based MOEAs. These methods use Quality Indicators (QI), which are assesments of Pareto Front approximations based on certain aspects like convergence or diversity of the approximation set. This allows us to effectively reduce the number of objectives. In particular, the algorithm known as PFI-EMOA \cite{one} uses an scalarization of a convergence QI and a diversity QI to inform it's search for a solution. In this way, the solution, generation by generation, promotes a solution through it's density estimator that is either more diverse or closer to the Pareto front. In this work we compared different scalarizations of the convergence indicator and the diversity indicator in PFI-EMOA to find if certain problems favored either one of them when evaluated by other quality indicators. We found, through a set of experiments and statistical tests (Firedman and Wilcoxon), that for certain problems the choice of which quality indicator informs the search is statistically relevant. This means that depending on the prefered solution a relevant choice can be taken when making the decision on which algorithm to use in order to maximize certain aspects of a particular MOP. The indicators used in PFI-AMOA are IGD+ for convergence and Riesz s-energy for diversity, in this work we also explore what happens when we take R2 as the convergence indicator. Even if there are fewer statistically significant differences, we find similar results in the sense there exist solutions that prefer certain scalarizations which give more weight to either the convergence or the diversity indicator. 
+
+
+In the realm of Multiobjective Optimization Problems (MOPs), several Evolutionary Algorithms have demonstrated effectiveness. However, their efficiency diminishes when dealing with more than four objectives. This decline is partly because the non-dominated region expands significantly, reducing the space for solutions that improve upon previous ones. Additionally, simple transformations of some Pareto fronts can significantly alter the performance of Multiobjective Optimization Evolutionary Algorithms (MOEAs). One strategy to address this issue involves employing Indicator-Based MOEAs. These algorithms utilize Quality Indicators (QIs), assessments of Pareto Front approximations focusing on aspects like convergence or the diversity of the set. Consequently, this approach effectively simplifies the number of objectives. Specifically, the PFI-EMOA \cite{one} algorithm employs a scalarization of convergence and diversity QIs to guide its search process. Each generation aims to promote a solution that either enhances diversity or approximates closer to the Pareto front. Our research compares different scalarizations of convergence and diversity indicators within PFI-EMOA to determine if certain problems exhibit a preference for one over the other, as assessed by other quality indicators. Using a series of experiments and statistical tests, including Friedman and Wilcoxon, we discovered that the selection of quality indicators significantly influences decision-making in algorithm choice for optimizing specific aspects of MOPs. While using indicators such as IGD+ for convergence and Riesz s-energy for diversity, this study also explores the effects of adopting R2 as the convergence indicator. Although fewer statistically significant differences were observed, the findings suggest that certain scalarizations, which prioritize either convergence or diversity, are preferred by specific solutions.
+
+\bibliographystyle{plain}
+\begin{thebibliography}{1}
+
+\bibitem{one}
+\newblock Falcón-Cardona, Jesus Guillermo, Hisao Ishibuchi, and Carlos A. Coello Coello,
+\newblock Exploiting the Trade-off between Convergence and Diversity Indicators
+\newblock In 2020 IEEE Symposium Series on Computational Intelligence (SSCI), 141–48. Canberra, ACT, Australia: IEEE, 2020. https://doi.org/10.1109/SSCI47803.2020.9308469.
+
+
+\end{thebibliography}
+
+\end{document}

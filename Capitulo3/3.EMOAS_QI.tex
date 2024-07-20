@@ -95,23 +95,49 @@ donde $\lambda$ es la medida de Lebesgue y mide el hipervolumen de la unión de 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=.6]{./Figuras/HV.jpg} 
-    \caption[Hipervolumen]{Cálculo del indicador HV, donde podemos ver el espacio dominado de cada solución con respecto al punto de referencia. Imagen tomada de \cite{tesis_mst_guillermo}.}
+    \includegraphics[scale=.6]{./Figuras/HV_demo.pdf} 
+    \caption[Hipervolumen]{Cálculo del indicador HV para dos conjuntos, podemos ver su espacio dominado. Del lado derecho movemos sólo un punto hacia un menor $f_1$ y vemos que el HV toma en cuenta este aumento.}
     \label{fig:HV}
 \end{figure}
 
 Otra característica deseable de este indicador es que se probó en \cite{Measure_Pareto_Optima} que para un espacio de búsqueda finito y un punto de referencia, la maximización del hipervolumen equivale a encontrar el conjunto de Pareto. 
 
+\subsection{Distancia Generacional (GD)} \label{sec:GD}
+Este es un indicador binario en el que asumimos que tenemos un conjunto de referencia, idealmente este conjunto es la mejor representación del frente de Pareto posible. Fue introducido en \cite{GD}.
+
+La idea del indicador es simplemente medir la distancia entre un conjunto de aproximación $\mathcal{A}$, que produciríamos con un algoritmo, al conjunto de referencia $\mathcal{Z}$. Así obtenemos la siguiente ecuación.
+
+\begin{equation} \label{eq:GD}
+    \text{GD} \left( \mathcal{A},\mathcal{Z} \right) = \frac{1}{|\mathcal{A}|} \sum_{x\in A} d_{\min}(x,Z)
+\end{equation}
+
+donde $d_{\min}(x,Z)=\min_{z \in \mathcal{Z}}{d(x,z)}$, con $d(x,y)$ una función de distancia, por ejemplo la norma euclidiana usual. En la Figura \ref{fig:GD_demo} podemos observar los conjuntos de aproximación $A$ y $B$ y los puntos mínimos con los que se calcula $d_{\min}$. Vemos que el conjunto $B$ al ser cercano a un punto del conjunto de referencia tiene un menor $\text{GD}$ que $A$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figuras/GD_demo.pdf}
+    \caption[GD]{Ilustración del cálculo del indicador GD para dos conjuntos.}
+    \label{fig:GD_demo}
+\end{figure}
+
 \subsection{Distancia Generacional Invertida (IGD)} \label{sec:IGD}
-Mide la distancia entre en conjunto $A$ y un conjunto de referencia con $M$ puntos $R=\{r_1,\ldots,r_M\}$, mediante
+Propuesta por primera vez en \cite{IGD}, la distancia generacional (IGD) invertida mide la distancia del $\mathcal{Z}$ de referencia al conjunto de aproximación, es decir sólo intercambiamos $\mathcal{A}$ y $\mathcal{Z}$ con respecto a la Ecuación \ref{eq:GD}.
 
 \begin{equation} \label{eq:IGD}
-    \text{IGD}(A,R)=\frac{1}{M}\sum_{i=1}^M \min_{a\in A} d_2(r_i,a), \nonumber
+    \text{IGD}(A,\mathcal{Z})=\frac{1}{|\mathcal{Z}|}\sum_{z\in\mathcal{Z}} d_{\min}(z,\mathcal{A}), \nonumber
 \end{equation}
-donde $d_2(r_i,a)$ es la distancia euclidiana entre cada punto del conjunto de referencia y la aproximación. Así, no podemos categorizar a IGD en una clase (proximidad, extensión, uniformidad, diversidad) previamente ya que un buen valor de IGD indica todas las buenas cualidades del conjunto de referencia. 
+donde $d_{\min}(x,Z)=\min_{z \in \mathcal{Z}}{d(x,z)}$, con $d(x,y)$ una función de distancia. Esta definición permite tratar casos que GD favorecería y que usalmente no cumplen con requisitos como la diversidad. En la Figura \ref{fig:IGD_demo} vemos la diferencia de calcular ambos indicadores para los mismos conjuntos que en \ref{fig:GD_demo}. En particular, notamos cómo IGD si distingue entre ambos conjuntos, teniendo un valor más pequeño para el conjuntoque tiene mayor distribución.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figuras/IGD_demo.pdf}
+    \caption[IGD]{Ilustración del cálculo del indicador IGD para dos conjuntos.}
+    \label{fig:IGD_demo}
+\end{figure}
+
 
 \subsection{Distancia Generacional Invertida + (IGD +)} \label{sec:IGDp}
-Definido en \cite{ishibuchiModifiedDistanceCalculation2015}, y denotado como IGD+, es una variación del IGD en donde se usa una función de distancia euclidiana modificada dentro del cálculo del promedio. Si denotamos como $Z$ al conjunto de soluciones, $A$ al conjunto de al frente de Pareto, La ecuación tiene una forma similar a la de IGD usual, la diferencia es que usa la siguiente definición de distancia entre el conjunto de referencia y el de aproximación, dada por $$d^{+}(\vec{a},\vec{z})=\sqrt{\sum_{i=1}^m \max(a_i-z_i,0)^2} $$
+Definido en \cite{ishibuchiModifiedDistanceCalculation2015}, y denotado como IGD+, es una variación del indicador IGD en donde se usa una función de distancia euclidiana modificada dentro del cálculo del promedio. Si denotamos como $Z$ al conjunto de soluciones, $A$ al conjunto de al frente de Pareto, La ecuación tiene una forma similar a la de IGD usual, la diferencia es que usa la siguiente definición de distancia entre el conjunto de referencia y el de aproximación, dada por $$d^{+}(\vec{a},\vec{z})=\sqrt{\sum_{i=1}^m \max(a_i-z_i,0)^2} $$
 
 Entonces la ecuación para el indicador queda como
 
@@ -120,33 +146,33 @@ Entonces la ecuación para el indicador queda como
 \end{equation}
 
 
-Esta modificación hace al indicador uno consitente de Pareto (definido en la Ecuación \ref{eq:consistente_Pareto}) que como hemos mencionado es una propiedad deseable de un indicador de convergencia. Regresando a la Ecuación \ref{eq:IGDp}, como $\vec{a}$ pertenece al conjunto de referencia y $\vec{z}$ al de aproximación, la Ecuación \ref{eq:IGDp} indica que, por cada dimensión, si la aproximación $z_i$ domina a la solución $a_i$ se calcula la distancia euclidiana usual. En caso contrario se calcula la distancia entre la aproximación $z$ y la región dominada de la referencia $a$. Al ser una medida de distancia, es mejor mientras sea más pequeña. En la Figura \ref{fig:comp_IGD_IGDp} podemos ver cómo se calcularía IGD en la izquierda e IGD+ en la derecha. 
+Esta modificación hace al indicador uno consitente de Pareto (definido en la Ecuación \ref{eq:consistente_Pareto}) que como hemos mencionado es una propiedad deseable de un indicador de convergencia. Regresando a la Ecuación \ref{eq:IGDp}, como $\vec{a}$ pertenece al conjunto de referencia y $\vec{z}$ al de aproximación, la Ecuación \ref{eq:IGDp} indica que, por cada dimensión, si la aproximación $z_i$ domina a la solución $a_i$ se calcula la distancia euclidiana usual. En caso contrario se calcula la distancia entre la aproximación $z$ y la región dominada de la referencia $a$. Al ser una medida de distancia, es mejor mientras sea más pequeña. En la Figura \ref{fig:comp_IGD_IGDp} podemos ver dos conjuntos distintos  en el que el conjunto $B$ incluso domina al conjunto de referencia, sin embargo, IGD nos diría que el conjunto $A$ es mejor al tener un menor valor del indicador. Con la modificación dada por la Ecuación \ref{eq:IGDp}, el indicador puede identificar que el conjunto $B$ domina al conjunto $A$.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{./Figuras/IGDp.jpg} 
-    \caption[IGD vs IGD+]{Comparativa entre IGD usual e IGD$+$. Imagen tomada de \cite{tesis_mst_guillermo}.}
+    \includegraphics[width=0.8\textwidth]{./Figuras/igdp_demo.pdf} 
+    \caption[IGD vs IGD+]{Comparativa entre IGD usual e IGD$+$.}
     \label{fig:comp_IGD_IGDp}
 \end{figure}
 
 \subsection{Epsilon +} \label{sec:Epsilonp}
-Escrito como $\epsilon_+$ es un indicador binario que mide la distancia que habría que recorrer el conjunto de referencia para que este fuera dominado débilmente por la aproximación, y la siguiente ecuación describe la medición. Entonces para dos conjuntos de puntos $A,B$ tenemos
+Escrito como $\epsilon_+$ \cite{epsilonplus} es un indicador binario que mide la distancia mínima que habría que recorrer un conjunto $A$ para dominar débilmente al conjunto $B$, la siguiente ecuación describe el cálculo del indicador
 
 \begin{equation} \label{eq:epsp}
     \epsilon_+(A,B)= \max_{b\in B} \min_{a\in A}\max_{j\in 1,\ldots, m} a_j-b_j. 
 \end{equation}
 
 Donde $A$ y $B$ son usualmente el conjunto de referencia y el de aproximación. De la Ecuación \ref{eq:epsp} vemos que el indicador depende del orden de los conjuntos.
-Para explicar de manera más clara que hace este indicador miremos la Figura \ref{fig:epsp}. Donde marcamos los diferentes conjuntos, el mínimo y el máximo. Ya habiendo encontrado $\epsilon_+$ podemos recorrer el conjunto $A$ de modo que ninguna solución de $B$ esté dominada por una de $A$. Así, el objetivo es minimizar este error para tener similitud entre la referencia y la aproximación. Al requerir un conjunto de referencia, la eficacia del indicador dependerá de si tenemos una buena aproximación al frente de Pareto. 
+Para explicar de manera más clara que hace este indicador miremos la Figura \ref{fig:epsp}. Vemos que después de trasladar $A$ por $\epsilon+$ el conjunto $A$ domina al conjunto de referencia. Así, el objetivo de este indicador es minimizar el traslado que hay que hacer para tener similitud entre la referencia y la aproximación. Al requerir un conjunto de referencia, la eficacia del indicador dependerá de si tenemos una buena aproximación al frente de Pareto. 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{Figuras/epsp.pdf}
-    \caption[$\epsilon+$]{Ilustración del $\epsilon_+$.}
+    \includegraphics[width=\textwidth]{Figuras/epsilon_plus_demo.pdf}
+    \caption[$\epsilon+$]{Ilustración del valor del indicador $\epsilon_+$.}
     \label{fig:epsp}
 \end{figure}
 
-\subsection{Diversidad de Solow-Polasky (SPD)} \label{sec:SPD}
+\subsection{Diversidad de Solow-Polasky (SPD)} \label{sec:SPD} 
 El indicador de diversidad de Solow-Polasky (SPD por sus siglas en inglés) fue originalmente creado en el contexto de biología para medir diversidad de especies y ha sido adaptado para su uso en problemas multiobjetivo. Esto se debe a que satisface propiedades deseables de operadores de diversidad \cite{SPD} como monoticidad en variedades, en distancia y que se mantengan constantes al agregar un elemento que ya esté presente en el conjunto de soluciones.
 
 Dada una población $P = \{P_1, \ldots, P_\mu\}$ de $\mu$ individuos y distancias por pares $d(P_i, P_j)$ para $1 \leq i,j \leq \mu$, Definimos la matriz $M$ de ($\mu \times \mu$) como $M_{ij} = \exp(-\theta  d(P_i, P_j))$. Así, el indicador queda definido por la siguiente ecuación:
@@ -156,12 +182,12 @@ Dada una población $P = \{P_1, \ldots, P_\mu\}$ de $\mu$ individuos y distancia
 \end{equation}
 
 
-donde $M^{-1}$ es la inversa generalizada de Moore-Penrose de la matriz $M$. Puede ser interpretado como el número de especies diferentes en la población. Su valor cae en los reales entre $1$ y $\mu$ por lo que nos da una medida fina de diversidad. Como podemos ver en la Figura \ref{fig:SPD}.
+donde $M^{-1}$ es la inversa generalizada de Moore-Penrose de la matriz $M$. Puede ser interpretado como el número de especies diferentes en la población. Su valor cae en los reales entre $1$ y $\mu$ por lo que nos da una medida fina de diversidad. En la Figura \ref{fig:SPD}, podemos ver diferentes valores de SPD para cien puntos distribuidos de diferente manera en el círculo unitario. Vemos que aquellos menos concentrados en el origen reciben mayor SPD. 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=1]{Figuras/SPD.jpg}
-    \caption[SPD]{Mejores distribuciones encontradas por hill-climber (izquierda), SPD (derecha), vemos como mejora claramente aquella de la derecha. Imagen tomada  de \cite{SPD}.}
+    \includegraphics[scale=0.7]{../Figuras/SPD_demo.pdf}
+    \caption[SPD]{Valores de SPD para diferentes distribuciones de puntos en el circulo unitario.}
     \label{fig:SPD}
 \end{figure}
 
