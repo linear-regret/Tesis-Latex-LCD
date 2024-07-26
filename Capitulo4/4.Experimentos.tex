@@ -6,6 +6,8 @@ En este capítulo se explica a detalle el procedimiento experimental que se usó
 
 Como mencionamos anteriormente en la Sección \ref{sec:PFI-EMOA}, el algoritmo en el que estamos basándonos \cite{PFI} emplea non-dominated sorting para decidir qué solución eliminar, sin embargo, cuando no existe un candidato obvio (porque hay varios en el último nivel) se recurre al uso de indicadores de calidad. En este algoritmo se ocupan dos indicadores que, sólo por el hecho de medir cosas diferentes, van a tener objetivos conflictivos; estos dos indicadores son IGD+ (revisado en la Sección \ref{sec:IGDp}) y la Energía-S de Riesz (revisada en la Sección \ref{sec:Energía-S}). 
 
+El código usado para correr los experimentos y realizar las pruebas estadísticas se encuentra en el siguiente enlace \href{https://github.com/linear-regret/Tesis-LCD}{https://github.com/linear-regret/Tesis-LCD}
+
 
 \section{Procedimiento de experimentación con diferentes pesos} \label{sec:Proc_exp}
 
@@ -160,7 +162,7 @@ Para cada problema y con el objetivo de poder detectar errores en el código y c
 \begin{figure} [H]
     \centering
     \includegraphics[width=\textwidth]{Figuras/WFG4_3obj_HV.pdf}
-    \caption[Boxplot DTLZ3 HV.]{Boxplot DTLZ3 con 3 objetivos con el indicador de Hipervolumen. La variable ind\_conv indica qué indicador de calidad se usó en la combinación de Tchebycheff de la Ecuación \eqref{eq:tchebychev}.}
+    \caption[Boxplot WFG4 3 Objetivos HV.]{Boxplot WFG4 con 3 objetivos con el indicador de Hipervolumen. La variable ind\_conv indica qué indicador de calidad se usó en la combinación de Tchebycheff de la Ecuación \eqref{eq:tchebychev}.}
     \label{fig:box}
 \end{figure}
 

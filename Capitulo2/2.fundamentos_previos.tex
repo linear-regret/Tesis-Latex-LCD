@@ -20,27 +20,23 @@ Tradicionalmente, la optimización se ha centrado en \textit{problemas de objeti
 
 Atender un problema únicamente desde una perspectiva SOP puede resultar en una simplificación excesiva. El enfoque de MOP permite capturar la complejidad real del problema, ofreciendo una visión más integral y representativa del entorno en el que se desenvuelve.
 
-Definiremos formalmente los componentes de un MOP en la Sección \ref{sec:Dominancia_Pareto}, explorando cómo este enfoque puede proporcionar soluciones más completas y realistas a problemas complejos. Después, en la Sección \ref{sec:clasif_MOO} explicaremos una clasificación de algoritmos multiobjetivo en términos generales. Luego, definiremos escalarizaciones comúnes que también usaremos para definir el algoritmo usado en este trabajo en la Sección \ref{sec:Escalarizaciones}.
-
-Concluiremos el capítulo en la Sección \ref{sec:AE}, explicando los algoritmos evolutivos que usaremos en este trabajo para encontrar encontrar una solución a un MOP (los algoritmos son llamados EMOAs por sus siglas en inglés). 
-
 Para tratar este problema desde una aplicación específica a ciencia de datos tomaremos el siguiente ejemplo de selección de características en un problema de clasificación:
 
 \begin{texample} \label{ex:Selecc}
-    Dado un conjunto de datos con $n$ columnas y un algoritmo de k-medias con dos componentes, etiqueta en una de dos clases (0 o 1). El problema de selección de características consiste en encontrar el menor número de columnas posibles tal que el error de clasificación sea mínimo.
+    Dado un conjunto de datos con $n$ columnas y un algoritmo de clasificación binario, el problema de selección de características consiste en encontrar el menor número de columnas posibles tal que el error de clasificación sea mínimo.
     
-    Así, tenemos que minimizar dos objetivos: el número de características y el error de clasificación, volviendo a esto un problema de optimización biobjetivo. 
+    Así, tenemos que minimizar dos objetivos: el número de características y el error de clasificación, volviendo a este un problema de optimización biobjetivo. 
 \end{texample}
 
 
 \subsection{Elementos de un problema multiobjetivo: definición matemática} \label{sec:Dominancia_Pareto}
 
-Un problema de optimización multiobjetivo busca encontrar, dadas unas funciones y restricciones, el conjunto de puntos que minimicen dichas funciones bajo estas restricciones. Puede ser caracterizado de manera más formal por las siguientes definiciones, que son ilustradas en la Figura \ref{fig:dec_obj}  \footnote{Imagen tomada de \cite{coelloEvolutionaryAlgorithmsSolving}}. 
+Dadas unas funciones objetivo $f_0,\ldots, f_{m-1}$, restricciones de igualdad dadas por las funciones $g_1,\ldots,g_I$ y restricciones de igualdad dadas por las funciones $h_1 \ldots, h_J$, un problema de optimización multiobjetivo busca encontrar el conjunto de puntos que minimicen dichas funciones bajo estas restricciones. Puede ser caracterizado de manera más formal por las siguientes definiciones, que son ilustradas en la Figura \ref{fig:dec_obj}. 
 
 \begin{itemize}
     \item \textbf{Región de decisión o factible}, $Q\subseteq \mathbb{R}^n$; corresponde a la región que cumple restricciones $g,f$ que se explican en la siguiente viñeta. 
     
-    $$ Q=\left\{x\in \mathbb{R}^n|g_i(x)\leq 0, h_j(x)=0 , 0\leq i \leq n, 0\leq j \leq n,\right\}.$$ 
+    $$ Q=\left\{x\in \mathbb{R}^n|g_i(x)\leq 0, h_j(x)=0 , 1\leq i \leq I, 1\leq j \leq J,\right\}.$$ 
 
     La región factible es donde cambian las variables de entrada para intentar optimizar los objetivos. Las funciones que aparecen como condiciones extra se explican en la siguiente viñeta.\\ En el Ejemplo \ref{ex:Selecc} de selección de características  el espacio factible sería una máscara binaria sobre las columnas que usamos (con un 1) y las que no (con un 0). De modo que el espacio está dado por todos los $x\in Q$ tales que  $Q=\{0,1\}^n$.
     \item \textbf{Restricciones} sobre el dominio que se pueden escribir como $J$ restricciones de \textbf{igualdad} e $I$ de \textbf{desigualdad} mediante la siguiente ecuación  
@@ -82,18 +78,17 @@ La Ecuación \eqref{eq:MOO} no tiene porque tener solución única. Para convenc
 \end{figure}
 
 
-Misma que se puede formular con diferentes niveles cada vez más estrictos de qué significa que un punto domine a otro. Las listamos a continuación:
 
-Para comprender el objetivo de los algoritmos multiobjetivo, es útil recurrir a una analogía social propuesta por Pareto en 1927\footnote{Esta perspectiva se enfoca en el punto de vista \emph{a posteriori}, que se explorará más adelante en la Sección \ref{sec:clasif_MOO}. En otras palabras, tras identificar soluciones para un problema, seleccionamos aquellas que mejor se ajusten a nuestros objetivos.}. Imaginemos una población de $N$ individuos y nuestro desafío es garantizar un estado donde cada uno alcance el máximo bienestar posible. En una sociedad compleja, cualquier cambio en el bienestar de una persona inevitablemente afecta a los demás. Por ejemplo, aumentar la riqueza de un individuo frecuentemente implica redistribuir recursos de otros. Bajo este contexto, Pareto define el estado ideal como aquel donde ninguna persona puede incrementar su bienestar sin perjudicar a otra. Esto se traduce matemáticamente en la noción de \textbf{optimalidad de Pareto}. A continuación mostraremos diferentes definiciones de optimalidad de Pareto en formas cada vez más estrictas, es decir, cada vez se le pide más a un punto para que se considere "mejor" que otro. 
+Para comprender los algoritmos multiobjetivo, es útil recurrir a una analogía social propuesta por Pareto en 1927\footnote{Esta perspectiva se enfoca en el punto de vista \emph{a posteriori}, que se explorará más adelante en la Sección \ref{sec:clasif_MOO}. En otras palabras, tras identificar soluciones para un problema, seleccionamos aquellas que mejor se ajusten a nuestros objetivos.}. Imaginemos una población de $N$ individuos y nuestro desafío es garantizar un estado donde cada uno alcance el máximo bienestar posible. En una sociedad compleja, cualquier cambio en el bienestar de una persona inevitablemente afecta a los demás. Por ejemplo, aumentar la riqueza de un individuo frecuentemente implica redistribuir recursos de otros. Bajo este contexto, Pareto define el estado ideal como aquel donde ninguna persona puede incrementar su bienestar sin perjudicar a otra. Esto se traduce matemáticamente en la noción de \textbf{optimalidad de Pareto}. A continuación mostraremos diferentes definiciones de optimalidad de Pareto en formas cada vez menos estrictas, es decir, cada vez se le pide menos a un punto para que se considere "mejor" que otro. 
 
 
 \subsubsection*{Dominancia de Pareto}
 
 \begin{itemize}
-    \item Un vector $x\in Q$ es \textbf{preferido} a otro vector $y\in Q$, denotado por $x<_p y \, \, $ si $\, x_i <y_i, \forall i$. De manera análoga se define uno que es menor o igual, denotado por $x\leq_p y$.
+    \item Un vector $a\in \mathbb{R}^n$ es \textbf{preferido} a otro vector $b\in \mathbb{R}^n$, denotado por $a<_p b \, \, $ si $\, a_i <b_i, \forall i$. De manera análoga se define uno que es menor o igual, denotado por $a\leq_p b$.
     \item Un vector $x\in Q$ \textbf{domina fuertemente} a otro vector $y\in Q$, denotado como $x < y$ con respecto a un MOP como \eqref{eq:MOO}, si sus objetivos son preferidos, es decir, si $F(x) <_p F(y)$.
     \item Un vector $x\in Q$ \textbf{domina} a otro $y\in Q$, denotado $x\prec y$, con respecto a un MOP si $F(x) \leq_p F(y)$ y $F(x)\neq F(y)$, en otro caso se dice que $y\in Q$  es \textbf{no-dominado} por $x\in Q$.
-    \item Un vector $x\in Q$ \textbf{domina débilmente} a $y\in Q$, denotado $x\preceq y$ si $F(x)\leq_p F(y)$. Es decir, permitimos el caso donde los puntos sean iguales. 
+    \item Un vector $x\in Q$ \textbf{domina débilmente} a $y\in Q$, denotado $x\preceq y$ si $F(x)\leq_p F(y)$. Es decir, permitimos el caso donde las imágenes de los puntos sean iguales. 
 \end{itemize}
 
 Esto nos da varias nociones de un vector siendo mejor que otro, mientras mejor sea nuestro algoritmo, mayor tenderá hacia la primera definición ya que es más estricta que el resto como podemos ver en la siguiente ecuación
@@ -108,15 +103,15 @@ Diremos que una solución $x\in Q$ es \textbf{óptima de Pareto} si es tal que s
     \nexists \,\, y\in Q \,\, \text{ tal que } y\prec x. \nonumber
 \end{equation}
 
-Es decir, no existe ninguna forma de mejorar sin empeorar.
+Es decir, no existe ninguna forma de mejorar algún objetivo sin empeorar otro.
 \end{definition}
 
 \begin{definition}
-Al conjunto de todos los puntos del espacio factible que son óptimos de Pareto se le conoce como \textbf{Conjunto de Pareto} y a su imagen a través de un MOP, definido en la Ecuación \ref{eq:MOO}, se le conoce como \textbf{Frente de Pareto}. Formalmente se definen como:
+Al conjunto de todos los puntos del espacio factible que son óptimos de Pareto se le conoce como \textbf{Conjunto de Pareto} y a su imagen a través de un MOP, definido en la Ecuación \ref{eq:MOO}, se le conoce como \textbf{Frente de Pareto}. Formalmente se define como:
 
 El conjunto de Pareto es el conjunto de todas las soluciones óptimas de Pareto, es decir
 \begin{equation} \label{eq:pareto_set}
-    P=\{x\in Q \, \, \big| \, \, x \text{ Es una solución óptima de Pareto del MOP}\}, \nonumber
+    P=\{x\in Q \, \, \big| \, \, x \text{ es una solución óptima de Pareto del MOP}\}, \nonumber
 \end{equation}
 
 mientras que la imagen del conjunto de Pareto a través de las funciones objetivo es el frente de Pareto 
@@ -127,7 +122,7 @@ F(P)=\{y\in \mathbb{R}^m \, \, \big| \, \, y=F(x), x \text{ es una solución óp
 
 \end{definition}
 
-El frente de Pareto de un MOP está acotado por dos puntos de referencia: el vector ideal y el vector de Nadir que definimos a continuación y pueden ser visualizados en la Figura \ref{fig:vectores_referencia} (Definiciones y Figura ambas tomadas de \cite{tesis_phd_guillermo}).
+El frente de Pareto de un MOP está acotado por dos puntos de referencia  \cite{tesis_phd_guillermo}: el vector ideal y el vector de Nadir que definimos a continuación y pueden ser visualizados en la Figura \ref{fig:vectores_referencia}.
 
 
 \begin{definition} \label{def:Ideal}
@@ -155,8 +150,8 @@ Estos dos puntos representan la combinación del mejor y el peor de los casos po
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.5]{Figuras/nadir_ideal_utopico.png}
-    \caption{Vectores de referencia: vector ideal $z^*$, vector de nadir $z^{\text{nadir}}$, vector utópico $z^{**}$.}
+    \includegraphics[scale=0.7]{Figuras/nadir_utopico_ideal.pdf}
+    \caption{Ilustración de las diferentes partes de un MOP y vectores útiles.}
     \label{fig:vectores_referencia}
 \end{figure}
 
@@ -192,30 +187,28 @@ Se puede, por ejemplo, hacer una \textbf{suma ponderada} \cite{zadehOptimalityNo
 \end{align}
 donde los $0\leq \alpha_i$ son coeficientes positivos que determinan la proporción de la preferencia que tiene el DM por cada uno de los objetivos, de modo que suman a 1 $\sum a_i=1$ . 
 
-Una escalarización que resultará útil en lo que sigue recibe el nombre de \textbf{método ponderado de Tchebycheff} \cite{bowmanRelationshipTchebycheffNorm1976}. Su objetivo es buscar un punto cuya imagen esté tan cerca posible a un vector de referencia. Como veremos recurrentemente en este trabajo, los algoritmos que usan un punto de referencia tienen una dependencia muy grande de qué tan buenos seamos determinando dicho punto. Está dado por
+Una escalarización que resultará útil a lo largo de este trabajo recibe el nombre de \textbf{método ponderado de Tchebycheff} \cite{bowmanRelationshipTchebycheffNorm1976}. Está dado por
 \begin{equation} \label{eq:tch_meth}
-    \min_{x\in Q} \max_{i=1,\ldots,m} \alpha_i |f_i(x)-z_i|, \nonumber
+    \text{TCH}(X,\mathcal{Z}) = \min_{x\in Q} \max_{i=1,\ldots,m} \alpha_i |f_i(x)-z_i|,
 \end{equation}
-donde los $\alpha_i$ satisfacen las mismas restricciones de la suma ponderada y $z$ corresponde al punto de referencia. Una elección de punto de referencia  que permite a este método acceder al frente de Pareto es aquel punto que consiste en los valores mínimos en cada objetivo, es decir el vector ideal de la Definición \ref{def:Ideal}:
+donde $z_i$ es un vector de referencia al que se busca aproximarse y $\alpha_i$ permite configurar la importancia  que se le da a cada objetivo y cumplen $\sum_i \alpha_i = 1$. Así, al minimizar \ref{eq:tch_meth}  buscamos en el espacio de soluciones aquel conjunto que tenga la mínima separación con respecto a la dirección de máxima variación del punto de referencia pesado por $\alpha_i$. 
+
+Una elección de punto de referencia  que permite a este método acceder al frente de Pareto es aquel punto que consiste en los valores mínimos en cada objetivo, es decir el vector ideal de la Definición \ref{def:Ideal}:
 
 \begin{equation} \label{eq:vector_utopico}
     F^*=(f_1^*,\ldots,f_k^*)=(\min_x f_1(x), \ldots \min_x f_k(x)). \nonumber
 \end{equation}
 
-Podemos extender esta definición a través de la función aumentada de Tchebycheff dada por
+Podemos extender esta definición a través de la función aumentada de Tchebycheff \cite{TCHEB} dada por
 \begin{equation} \label{eq:tchebychev}
-    \text{ATCH}_{\vec{w}}=\max_{i=0,\ldots,d} \{w_ix_i\}+\alpha \sum_{i=1}^k x_i   ,
+    \text{ATCH}_{\vec{w}}(x)=\max_{i=0,\ldots,d} \{w_ix_i\}+\alpha \sum_{i=1}^k x_i   ,
 \end{equation}
-donde podemos entender el segundo término como una penalización del valor de los objetivos parecido a la regularización L1 que se realiza en modelos de regresión.
-
-
-% metodo de conjuntos, directed search, metodos de continuación
-
+donde el vector de referencia $z$  es cero porque queremos minimizar cada objetivo. Podemos entender el segundo término como una penalización del valor de los objetivos parecido a la regularización L1 que se realiza en modelos de regresión.
 
 
 \section{Algoritmos Evolutivos} \label{sec:AE}
 
-Esta sección y la siguiente siguen la parte introductoria de \cite{EAforMOEAs}. El diseño de un algoritmo evolutivo proviene del hecho de observar  que la naturaleza ha podido tener un éxito enorme produciendo complejidades increíblemente variadas y adaptables con su mecanismo de evolución natural. De este modo, un programa que vaya cambiando de acuerdo a las reglas de la evolución natural, podría tener mucho éxito. Un algoritmo evolutivo tiene las componentes necesarias para hacer esta analogía concreta y su objetivo es ir cambiando una población de individuos de manera que se encuentren los más aptos. Así, tenemos las siguientes definiciones, ilustradas en la Figura \ref{fig:EA_components} \footnote{Imagen obtenida  de \cite{coelloEvolutionaryAlgorithmsSolving}}
+Esta sección y la siguente se basan en la parte introductoria de \cite{EAforMOEAs}. El diseño de un algoritmo evolutivo proviene del hecho de observar  que la naturaleza ha podido tener un éxito enorme produciendo complejidades increíblemente variadas y adaptables con su mecanismo de evolución natural. De este modo, un programa que vaya cambiando de acuerdo a las reglas de la evolución natural, podría tener mucho éxito. Un algoritmo evolutivo tiene las componentes necesarias para hacer esta analogía concreta y su objetivo es ir cambiando una población de individuos de manera que se encuentren los más aptos. Así, tenemos las siguientes definiciones
 
 \begin{itemize}
     \item \textbf{Individuo}: es una solución de algún problema que se encuentra codificada. Representaciones comunes incluyen la binaria y la real. En el Ejemplo \ref{ex:Selecc} de selección de características  la representación es binaria.
@@ -224,13 +217,6 @@ Esta sección y la siguiente siguen la parte introductoria de \cite{EAforMOEAs}.
     \item \textbf{Cromosomas}: Está formado de uno o más genotipos.
     \item \textbf{Genes}: Lo que forma a los cromosomas, cuyo valor recibe el nombre de \textbf{alelo} y puede tomar valores de un alfabeto genético dado. Análogo a cómo los alelos biológicos tienen cuatro nucleótidos: Guanina, Adenosina, Citosina y Tiamina. 
 \end{itemize}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{Figuras/EA_components.png}
-    \caption[Componentes algoritmo evolutivo]{Descripción de componentes de la representación interna de un algoritmo evolutivo. En la parte izquierda tenemos una representación binaria, mientras que en la derecha una representación real de los individuos.}
-    \label{fig:EA_components}
-\end{figure}
 
 Los algoritmos evolutivos cuentan con tres mecanismos para imitar la evolución natural que se representan en forma de diagrama en la Figura \ref{fig:EA_mech}, esta Figura fue traducida y adaptada de \cite{coelloEvolutionaryAlgorithmsSolving}. A continuación detallamos estos mecanismos: 
 
@@ -313,12 +299,12 @@ Para definir un EMOA basta cambiar la definición de la función de selección $
 $$\phi:I\rightarrow \mathbb{R}^{n_{obj}}, \quad n_{obj}>1.$$
 
 
-Podemos ver una descripción pictórica en la Figura \ref{fig:MOEA_EA}.
+Podemos ver una descripción pictórica en la Figura \ref{fig:EMOA_EA}.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{Figuras/MOEA_EA.png}
-    \caption[EMOAs vs EAs]{Diferencia entre los procedimientos para uno a) y múltiples objetivos b). La diferencia es la transformación y evaluación vectorial. Imagen traducida de \cite{coelloEvolutionaryAlgorithmsSolving}.}
+    \caption[EMOAs vs EAs]{Diferencia entre los procedimientos para uno a) y múltiples objetivos b). La diferencia es la transformación y evaluación vectorial. }
     \label{fig:EMOA_EA}
 \end{figure}
 

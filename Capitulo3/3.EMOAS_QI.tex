@@ -77,9 +77,15 @@ Estos indicadores también se pueden clasificar de acuerdo al número de conjunt
 Al ser un mapeo a los números reales, es posible definir un orden total en $\Psi$ a través de un indicador unario. Dicho orden puede coincidir con aquel de la dominancia de Pareto en el siguiente sentido
 
 \begin{equation} \label{eq:consistente_Pareto}
-    A \preceq B \implies I(A)\leq I(B).
+    A \preceq B \implies I(A) < I(B).
 \end{equation}
-A esta propiedad del indicador $I$ se le conoce como \textbf{consistencia de Pareto}. No siempre es posible que nuestro indicador sea consistente de Pareto, por ejemplo, en categorías como diversidad no necesariamente se alinearan los objetivos de esparcir un conjunto con aquellos de encontrar uno menos dominado. Esto se debe a que el esfuerzo de definir indicadores que no sólo traten de dominancia es para no caer en las situaciones donde tratar el problema de esta forma lleva a complicaciones como que el algoritmo se estanque.
+A esta propiedad del indicador $I$ se le conoce como \textbf{consistencia de Pareto}. Cuando la condición es de desigualdad, es decir 
+
+\begin{equation} \label{eq:consistente_debil_Pareto}
+    A \preceq B \implies I(A)\leq I(B),
+\end{equation}
+
+se le llama consistencia débil. No siempre es posible que nuestro indicador sea consistente de Pareto, por ejemplo, en categorías como diversidad no necesariamente se alinearan los objetivos de esparcir un conjunto con aquellos de encontrar uno menos dominado. Esto se debe a que el esfuerzo de definir indicadores que no sólo traten de dominancia es para no caer en las situaciones donde tratar el problema de esta forma lleva a complicaciones como que el algoritmo se estanque.
 
 A continuación definiremos brevemente los indicadores usados en este trabajo .
 
@@ -142,11 +148,11 @@ Definido en \cite{ishibuchiModifiedDistanceCalculation2015}, y denotado como IGD
 Entonces la ecuación para el indicador queda como
 
 \begin{equation} \label{eq:IGDp}
-    IGD^+(A,Z) =  \frac{1}{|Z|} \sum_{\vec{z}\in Z}\min_{\vec{a}\in A} d^{+}(\vec{a},\vec{z}).
+    \text{IGD}^+(A,Z) =  \frac{1}{|Z|} \sum_{\vec{z}\in Z}\min_{\vec{a}\in A} d^{+}(\vec{a},\vec{z}).
 \end{equation}
 
 
-Esta modificación hace al indicador uno consitente de Pareto (definido en la Ecuación \ref{eq:consistente_Pareto}) que como hemos mencionado es una propiedad deseable de un indicador de convergencia. Regresando a la Ecuación \ref{eq:IGDp}, como $\vec{a}$ pertenece al conjunto de referencia y $\vec{z}$ al de aproximación, la Ecuación \ref{eq:IGDp} indica que, por cada dimensión, si la aproximación $z_i$ domina a la solución $a_i$ se calcula la distancia euclidiana usual. En caso contrario se calcula la distancia entre la aproximación $z$ y la región dominada de la referencia $a$. Al ser una medida de distancia, es mejor mientras sea más pequeña. En la Figura \ref{fig:comp_IGD_IGDp} podemos ver dos conjuntos distintos  en el que el conjunto $B$ incluso domina al conjunto de referencia, sin embargo, IGD nos diría que el conjunto $A$ es mejor al tener un menor valor del indicador. Con la modificación dada por la Ecuación \ref{eq:IGDp}, el indicador puede identificar que el conjunto $B$ domina al conjunto $A$.
+Esta modificación hace al indicador uno débilmente consitente de Pareto (definido en la Ecuación \ref{eq:consistente_debil_Pareto}) que como hemos mencionado es una propiedad deseable de un indicador de convergencia. Regresando a la Ecuación \ref{eq:IGDp}, como $\vec{a}$ pertenece al conjunto de referencia y $\vec{z}$ al de aproximación, la Ecuación \ref{eq:IGDp} indica que, por cada dimensión, si la aproximación $z_i$ domina a la solución $a_i$ se calcula la distancia euclidiana usual. En caso contrario se calcula la distancia entre la aproximación $z$ y la región dominada de la referencia $a$. Al ser una medida de distancia, es mejor mientras sea más pequeña. En la Figura \ref{fig:comp_IGD_IGDp} podemos ver dos conjuntos distintos  en el que el conjunto $B$ incluso domina al conjunto de referencia, sin embargo, IGD nos diría que el conjunto $A$ es mejor al tener un menor valor del indicador. Con la modificación dada por la Ecuación \ref{eq:IGDp}, el indicador puede identificar que el conjunto $B$ domina al conjunto $A$.
 
 \begin{figure}[H]
     \centering
@@ -204,24 +210,44 @@ donde $M^{-1}$ es la inversa generalizada de Moore-Penrose de la matriz $M$. Pue
 % (7) Two-objective solution set optimization to maximize hypervolume and .... https://ieeexplore.ieee.org/document/6505243.
 
 \subsection{R2} \label{sec:R2}
-Este indicador pertenece a un conjunto más general de indicadores conocido como la familia $R$ \cite{R2}. Integra las preferencias del tomador de decisiones mediante una función de densidad de utilidad $h(u)$ y compara dos conjuntos de soluciones mediante la siguiente ecuación
+El indicador $R2$ pertenece a un conjunto más general de indicadores conocido como la familia $R$ \cite{R2}. Integra las preferencias del tomador de decisiones mediante una función de densidad de utilidad $h(u)$ y compara un conjunto de aproximación $\mathcal{A}$ con uno de referencia $\mathcal{Z}$ mediante la siguiente ecuación
+
+\begin{equation} \label{eq:R2_completo}
+    R2(\mathcal{Z},\mathcal{A},U)=\int_{u\in U} h(u)u^*(\mathcal{Z}) dU- \int_{u\in U} h(u) u^*(\mathcal{Z})du, 
+\end{equation}
+donde  $u^*(\mathcal{A})$ es el mejor valor que se logra en el conjunto $A$ dado esta función de utilidad. Cuando la información sobre la preferencia del tomador de decisiones no se conoce se puede suponer una función uniforme sobre las funciones de utilidad. Si el conjunto de funciones de utilidad es discreto se puede cambiar la integral por una suma. Además, al comparar el $R2$ de dos conjuntos distintos, podemos ver que el segundo término de \ref{eq:R2_completo} se cancela en la diferencia. De modo que bajo estas características tenemos
 
 \begin{equation} 
-    R2(A,B,U)=\int_{u\in U} h(u)u^*(A) dU- \int_{u\in U} h(u) u^*(B)du, \nonumber
+    R2(\mathcal{A})=\frac{1}{|W|}\sum_{w\in W} h(u)u^*(\mathcal{A},w), \nonumber
 \end{equation}
-donde  $u^*(A)$ es el mejor valor que se logra en el conjunto $A$ dado esta función de utilidad. Cuando la información sobre la preferencia del tomador de decisiones no se conoce se puede suponer una función uniforme y en práctica un conjunto de pesos son usados para parametrizar la función de utilidad. Entonces el indicador puede ser calculado como un operador unario dado por la siguiente ecuación
+para la función $u(\mathcal{A},w)$ se pueden usar escalarizaciones comunes como suma ponderada \eqref{eq:suma_ponderada} o la función de escalarización de Tchebycheff \eqref{eq:tchebychev}. Este indicador tiene la ventaja de tener un costo computacional relativamente pequeño, pero tiene menor precisión que otros indicadores que consideran un conjunto continuo de pesos como el IPF. 
 
-\begin{equation} \label{eq:R2}
-    R2(A)=\frac{1}{|W|}\sum_{w\in W} h(u)u^*(A,w), \nonumber
+% Además cumple con las siguientes características \cite{tesis_phd_guillermo}
+
+% \begin{itemize}
+%     \item Es débilmente monótono, i.e.,
+% \end{itemize}
+% IR2(A)  IR2(B) en caso de que A  B, (2) simultaneamente evalua todos los aspectos
+% deseables de una aproximacion al frente de Pareto, (3) las soluciones que genera
+% estan usualmente uniformemente distribuidas, y (4) es mucho menos costoso computacionalmente
+% que HV.
+
+En este trabajo usamos un conjunto de funciones de utilización conocidas como ASF (Achievement Scalarizing Function) que están dadas en función un conjunto de vectores de pesos y un vector referencia $z$ que se toma convexos\footnote{Los vectores convexos son no negativos $\lambda_i\geq 0, \forall i$ y suman a uno $\sum_i \lambda_i =1$} $\Lambda$ por
+
+\begin{equation}\label{eq:R2}
+    R2(\mathcal{A}, \Lambda, \mathbf{z}) = \frac{1}{|\Lambda|} \sum_{\mathbf{\lambda} \in \Lambda} \min_{\mathbf{a} \in \mathcal{A}} \left\{ \max_{i \in \{1, \ldots, m\}} \left\{ \frac{|a_i - z_i|}{\lambda_i} \right\} \right\}
 \end{equation}
-para la función $u(A,w)$ se pueden usar escalarizaciones comunes como suma ponderada \eqref{eq:suma_ponderada} o la función de escalarización de Tchebycheff \eqref{eq:tchebychev}. Este indicador tiene la ventaja de tener un costo computacional relativamente pequeño, pero tiene menor precisión que otros indicadores que consideran un conjunto continuo de pesos como el IPF. En la Figura \ref{fig:R2} vemos el cálculo del indicador R2, los vectores de pesos que nos ayudan a materializar las preferencias de la función de utilidad.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=.6]{./Figuras/R2.jpg} 
-    \caption[R2]{Cálculo de R2. Imagen tomada de \cite{tesis_mst_guillermo}.}
-    \label{fig:R2}
-\end{figure}
+La región definida por los vectores convexos forman un simplejo en $\mathbb{R}^m$. Los puntos de ese simplejo definirán las funciones de utilidad que evaluamos en \ref{eq:R2}. Existen métodos para distribuir estos puntos como SLD (Simple Latex Desing). En este trabajo usamos un método definido para maximizar la Energí-S de Riesz de los vectores en el simplejo. 
+
+% En la Figura \ref{fig:R2} vemos el cálculo del indicador R2, los vectores de pesos que nos ayudan a materializar las preferencias de la función de utilidad.
+
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[scale=.6]{./Figuras/R2.jpg} 
+%     \caption[R2]{Cálculo de R2. Imagen tomada de \cite{tesis_mst_guillermo}.}
+%     \label{fig:R2}
+% \end{figure}
 
 % The R2 indicator is a measure of the quality of a set of solutions in multiobjective optimization, based on a utilitarian model of species conservation². It is defined as the weighted sum of the hypervolumes of the scalarized optimization problems⁶. The R2 indicator is to be **maximized** to obtain a better set of solutions⁴⁵. A higher value of the R2 indicator means that the solutions are more optimal and diverse, and cover a larger portion of the Pareto front. A lower value means that the solutions are less optimal and diverse, and cover a smaller portion of the Pareto front. Therefore, if you want to optimize the R2 indicator in multiobjective optimization, you should aim for a **maximal** value.
 
@@ -235,12 +261,16 @@ para la función $u(A,w)$ se pueden usar escalarizaciones comunes como suma pond
 % (7) undefined. https://ieeexplore.ieee.org/servlet/opac?punumber=6552460.
 
 \subsection{Energía S} \label{sec:Energía-S}
-La Energía-S de Riesz \cite{sEnergy} es una medida de la uniformidad de soluciones que depende de un parámetro $s$. Tiene la ventaja de no necesitar un conjunto de referencia, es decir, es un operador unario y está dada por 
+La Energía-S de Riesz \cite{sEnergy} es una medida de la uniformidad de soluciones que depende de un parámetro $s$. Está basada en que la energía potencial entre dos cuerpos va como el inverso de su distancia.  Tiene la ventaja de no necesitar un conjunto de referencia, es decir, es un operador unario y está dada por 
 
 \begin{equation} \label{eq:S_energy}
     E_s(A)=\sum_{i\neq j} ||a_i-a_j||^{-s},
 \end{equation}
 mientras $s\rightarrow \infty$ la Energía-S de Riesz tiende a soluciones más uniformes. Además, el parámetro $s$ es independiente de la forma y ha sido usado para producir conjuntos uniformemente distribuidos en una clase grande de variedades $d$-dimensionales rectificables.
+
+% Conjuntos con diferente energía S comparados con conjuntos con diferente SPD. 
+
+
 
 \subsection*{Contribución de solución al indicador}
 Para la siguiente sección también será útil definir la contribución de una solución a un cierto indicador; es decir, que tan importante es la solución particular para el desempeño de la solución. Eso es útil porque podemos distinguir cuál es la solución que menos ayuda a optimizar un indicador dado. De manera más formal usamos la Ecuación \eqref{eq:Contribucion}. Esta mide el efecto de quitar un punto en el cálculo del indicador y ver su efecto. Si $a$ es un punto que ayuda mucho a elevar el indicador, entonces $I(A)$ será muy diferente a $I(A \setminus \{a\})$.
@@ -268,7 +298,7 @@ Para ejemplificar esta clase de algoritmos explicaremos el primer EMOA propuesto
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{Figuras/vega.png}
+    \includegraphics[width=\textwidth]{Figuras/VEGA_diagrama.png}
     \caption[VEGA]{Ilustración del algoritmo de VEGA.}
     \label{fig:VEGA}
 \end{figure}
@@ -294,14 +324,8 @@ Este algoritmo también es no-elitista lo que hace muy costoso el cálculo de lo
 
 Para ejemplificar este tipo de algoritmos se explica brevemente el funcionamiento del algoritmo NSGA-II.  
 
-En el 2000 se publicó \cite{debFastElitistNondominated2000} una actualización del algoritmo anterior que ataca el problema de la complejidad computacional y el de la diversidad de las soluciones proponiendo dos mecanismos diferentes. Para el problema de la complejidad ahora se usa un enfoque elitista. De esta forma se pueden conservar rankings de generaciones anteriores y no se tiene la carga computacional de estarlos calculando constantemente. Además de esto para asegurar que los individuos de una población no se concentran en una región pequeña del espacio, se suelen usar algún \textbf{estimador de densidad} que mide que tan cerca están los puntos y puede lograr que no existan demasiados aglomerados en una región pequeña del espacio. En NSGA-II se usa un estimador de densidad llamado \textbf{crowding distance} en su operador de selección que se encarga de que las soluciones estén al menos una distancia mínima separadas entre sí. Podemos ver un esquema de su funcionamiento en la Figura \ref{fig:nsga2}, tomada de \cite{coelloEvolutionaryAlgorithmsSolving}.
+En el 2000 se publicó \cite{debFastElitistNondominated2000} una actualización del algoritmo anterior que ataca el problema de la complejidad computacional y el de la diversidad de las soluciones proponiendo dos mecanismos diferentes. Para el problema de la complejidad ahora se usa un enfoque elitista. De esta forma se pueden conservar rankings de generaciones anteriores y no se tiene la carga computacional de estarlos calculando constantemente. Además de esto para asegurar que los individuos de una población no se concentran en una región pequeña del espacio, se suelen usar algún \textbf{estimador de densidad} que mide que tan cerca están los puntos y puede lograr que no existan demasiados aglomerados en una región pequeña del espacio. En NSGA-II se usa un estimador de densidad llamado \textbf{crowding distance} en su operador de selección que se encarga de que las soluciones estén al menos una distancia mínima separadas entre sí. 
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{Figuras/nsga2.png}
-    \caption[NSGA-II]{Esquema del algoritmo de NSGA-II notamos la diferencia con la Figura \ref{fig:nsga1} por el carácter elitista (combinando padres e hijos) y por el paso del estimador de densidad.}
-    \label{fig:nsga2}
-\end{figure}
 
 Este algoritmo ha sido muy exitoso siendo la referencia contra la que se comparan la mayoría de las propuestas de EMOAs. Su capacidad exploratoria es cuestionable  parece tener dificultad generando soluciones no dominadas en regiones aisladas como cuando se incrementa el número de dimensiones \cite{coelloEvolutionaryAlgorithmsSolving}. Por sus características se le conoce como un algoritmo \textbf{Elitista basado en dominancia de Pareto}.
 
@@ -375,10 +399,11 @@ Una característica interesante de hacer esta combinación es que se obtiene un 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{Figuras/casos.png}
+    \includegraphics[width=\textwidth]{Figuras/casos.pdf}
     \caption[Tres casos para PFI.emoa]{Tres casos de selección diferentes dependiendo del comportamiento de la contribución al indicador combinado \eqref{eq:Contribucion}.}
     \label{fig:casos}
 \end{figure}
+
 
 En el caso 1, cada que una solución se remueve de $A$, $E_s$ se vuelve mejor. Entonces $\vec{I}_s(A,Z)$ está mutuamente no dominado contra las contribuciones de cada solución, $\vec{I}_s(A \setminus {\vec{a}},Z)$. Entonces $\text{ATCH}$ podría ser menor, igual o mayor antes y después de quitar la solución $\vec{a}$. En el caso 2, todos los vectores  $\vec{I}_s(A \setminus {\vec{a}},Z)$ están dominados por  $\vec{I}_s(A ,Z)$ por tener $E_s$ mayor, dado que $\text{ATCH}$ preserva orden\footnote{Esto quiere decir que $\text{ATCH}(\vec{I}_s(A,Z))< \text{ATCH}(\vec{I}_s(A \setminus {\vec{a}},Z))$}. Finalmente el caso 3 es una combinación de ambos. Como existe una solución que no contribuye a la convergencia del algoritmo, en cualquiera de estos 3 casos, se elimina la solución que peor contribuya a la Energía-S. En el Algoritmo \ref{alg:PFI-EMOA} podemos ver el pseudocódigo de PFI-EMOA.
 
