@@ -5,7 +5,7 @@
 
 \chapter{Fundamentos Previos}
 
-En este capítulo se da la teoría preliminar necesaria que forma las bases del problema a atacar. Se comienza en la Sección \ref{sec:Dominancia_Pareto} describiendo de manera formal un problema de optimización multiobjetivo, en la siguiente Sección \ref{sec:clasif_MOO} se explica una clasificación breve de algoritmos usados para optimizar problemas multiobjetivo visto desde la perspectiva de la estrategia usada para resolverlo; es decir, cuándo se usan las preferencias del tomador de decisiones para buscar las soluciones. Después, en la Sección \ref{sec:Escalarizaciones}, se explican escalarizaciones comunes, haciendo énfasis en la función aumentada de Tchebycheff que se usará frecuentemente en este trabajo. 
+En este capítulo se da la teoría preliminar necesaria que forma las bases del problema a atacar. Se comienza en la Sección \ref{sec:Dominancia_Pareto} describiendo de manera formal un problema de optimización multiobjetivo. En la Sección \ref{sec:clasif_MOO} se explica una clasificación breve de algoritmos usados para optimizar problemas multiobjetivo visto desde la perspectiva de la estrategia usada para resolverlo. Después, en la Sección \ref{sec:Escalarizaciones}, se explican escalarizaciones comunes, haciendo énfasis en la función aumentada de Tchebycheff que se usará frecuentemente en este trabajo. 
 Se concluye el capítulo en la Sección \ref{sec:AE} con una explicación breve de qué son los algoritmos Evolutivos.
 
 
@@ -31,7 +31,7 @@ Para tratar este problema desde una aplicación específica a ciencia de datos t
 
 \subsection{Elementos de un problema multiobjetivo: definición matemática} \label{sec:Dominancia_Pareto}
 
-Dadas unas funciones objetivo $f_0,\ldots, f_{m-1}$, restricciones de igualdad dadas por las funciones $g_1,\ldots,g_I$ y restricciones de igualdad dadas por las funciones $h_1 \ldots, h_J$, un problema de optimización multiobjetivo busca encontrar el conjunto de puntos que minimicen dichas funciones bajo estas restricciones. Puede ser caracterizado de manera más formal por las siguientes definiciones, que son ilustradas en la Figura \ref{fig:dec_obj}. 
+Dadas unas funciones objetivo $f_0,\ldots, f_{m-1}$, restricciones de desigualdad dadas por las funciones $g_1,\ldots,g_I$ y restricciones de igualdad dadas por las funciones $h_1 \ldots, h_J$, un problema de optimización multiobjetivo busca encontrar el conjunto de puntos que minimicen dichas funciones bajo estas restricciones. Puede ser caracterizado de manera más formal por las siguientes definiciones, que son ilustradas en la Figura \ref{fig:dec_obj}. 
 
 \begin{itemize}
     \item \textbf{Región de decisión o factible}, $Q\subseteq \mathbb{R}^n$; corresponde a la región que cumple restricciones $g,f$ que se explican en la siguiente viñeta. 
@@ -79,7 +79,9 @@ La Ecuación \eqref{eq:MOO} no tiene porque tener solución única. Para convenc
 
 
 
-Para comprender los algoritmos multiobjetivo, es útil recurrir a una analogía social propuesta por Pareto en 1927\footnote{Esta perspectiva se enfoca en el punto de vista \emph{a posteriori}, que se explorará más adelante en la Sección \ref{sec:clasif_MOO}. En otras palabras, tras identificar soluciones para un problema, seleccionamos aquellas que mejor se ajusten a nuestros objetivos.}. Imaginemos una población de $N$ individuos y nuestro desafío es garantizar un estado donde cada uno alcance el máximo bienestar posible. En una sociedad compleja, cualquier cambio en el bienestar de una persona inevitablemente afecta a los demás. Por ejemplo, aumentar la riqueza de un individuo frecuentemente implica redistribuir recursos de otros. Bajo este contexto, Pareto define el estado ideal como aquel donde ninguna persona puede incrementar su bienestar sin perjudicar a otra. Esto se traduce matemáticamente en la noción de \textbf{optimalidad de Pareto}. A continuación mostraremos diferentes definiciones de optimalidad de Pareto en formas cada vez menos estrictas, es decir, cada vez se le pide menos a un punto para que se considere "mejor" que otro. 
+Para comprender los algoritmos multiobjetivo, es útil recurrir a una analogía social propuesta por Pareto en 1927.
+% \footnote{Esta perspectiva se enfoca en el punto de vista \emph{a posteriori}, que se explorará más adelante en la Sección \ref{sec:clasif_MOO}. En otras palabras, tras identificar soluciones para un problema, seleccionamos aquellas que mejor se ajusten a nuestros objetivos.}
+Imaginemos una población de $N$ individuos y nuestro desafío es garantizar un estado donde cada uno alcance el máximo bienestar posible. En una sociedad compleja, cualquier cambio en el bienestar de una persona inevitablemente afecta a los demás. Por ejemplo, aumentar la riqueza de un individuo frecuentemente implica redistribuir recursos de otros. Bajo este contexto, Pareto define el estado ideal como aquel donde ninguna persona puede incrementar su bienestar sin perjudicar a otra. Esto se traduce matemáticamente en la noción de \textbf{optimalidad de Pareto}. A continuación mostraremos diferentes definiciones de optimalidad de Pareto en formas cada vez menos estrictas, es decir, cada vez se le pide menos a un punto para que se considere "mejor" que otro. 
 
 
 \subsubsection*{Dominancia de Pareto}
@@ -179,7 +181,7 @@ También podemos categorizar los MOP a través de cómo servimos al tomador de d
 
 \subsection{Escalarizaciones} \label{sec:Escalarizaciones}
 
-Una de las maneras más sencilla de resolver un problema multiobjetivo es trasladarlo a uno con un solo objetivo y ahí usar todos los resultados existentes en el área de optimización mono-objetivo. A esto se le conoce como escalarización ya que trasladamos el problema vectorial de $\mathbb{R}^m$ a uno escalar en $\mathbb{R}$. El resultado de un SOP suele ser sólo un punto, sin embargo, nosotros estamos buscando un método que nos devuelva una aproximación al frente de Pareto. Para ayudarnos con esta tarea podemos definir varias escalarizaciones de forma que se vaya obteniendo una representación diferente del frente en cada SOP único.
+Una de las maneras más sencilla de resolver un problema multiobjetivo es trasladarlo a uno con un solo objetivo y ahí usar todos los resultados existentes en el área de optimización mono-objetivo. A esto se le conoce como escalarización ya que trasladamos el problema vectorial de $\mathbb{R}^m$ a uno escalar en $\mathbb{R}$.
 
 Se puede, por ejemplo, hacer una \textbf{suma ponderada} \cite{zadehOptimalityNonscalarvaluedPerformance1963} de los objetivos, para tener
 \begin{align} \label{eq:suma_ponderada}
@@ -230,7 +232,7 @@ Los algoritmos evolutivos cuentan con tres mecanismos para imitar la evolución 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{Figuras/explotacion.pdf}
-    \caption[Explotación]{Estrategia de Explotación visualizada; dados los puntos haz más pasos de gradiente descendiente con ellos.}
+    \caption[Explotación]{Estrategia de Explotación visualizada; dados los puntos se dan pasos de gradiente descendiente para encontrar el óptimo.}
     \label{fig:explotacion}
 \end{figure}
 

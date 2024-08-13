@@ -11,7 +11,7 @@ El código usado para correr los experimentos y realizar las pruebas estadístic
 
 \section{Procedimiento de experimentación con diferentes pesos} \label{sec:Proc_exp}
 
-Como se mencionó en la Sección \ref{sec:PFI-EMOA}, el algoritmo PFI-EMOA \cite{PFI} realiza una escalarización constante de los dos indicadores de calidad (Energía-S de Riesz e IGD+) para procurar que la solución no se estanque en convergencia ni tampoco en distribución. La forma de la escalarización está dada por la función aumentada de Tchebycheff dada en la Ecuación \ref{eq:tchebychev}.
+Como se mencionó en la Sección \ref{sec:PFI-EMOA}, el algoritmo PFI-EMOA \cite{PFI} realiza una escalarización constante de los dos indicadores de calidad (Energía-S de Riesz e IGD+) para procurar que la solución no se estanque en convergencia ni tampoco en diversidad. La forma de la escalarización está dada por la función aumentada de Tchebycheff dada en la Ecuación \ref{eq:tchebychev}.
 
 \begin{equation} \label{eq:ATCH2}
     \text{ATCH}_{\vec{w}}=\max_{i=0,1} \{w_ix_i\}+\alpha (x_0+x_1),  
@@ -171,7 +171,9 @@ Para cada problema y con el objetivo de poder detectar errores en el código y c
 
 \subsection{Pruebas Estadísticas}
 
-Como se explicó en la Sección \ref{sec:pruebas_estadisticas}, para saber si un algoritmo tiene un desempeño diferente en un indicador dado usaremos la prueba de Friedman \ref{sec:Friedman}. Algunos resultados agregados de este procedimiento se pueden ver en las siguientes dos Figuras. En la primera imagen de la Figura \ref{fig:Fr_dim_IGDp} se usó el algoritmo con IGD+ mientras que en la Figura \ref{fig:Fr_dim_R2} R2. Podemos ver que en R2 existen mucho menos diferencias de acuerdo a Friedman.   La prueba sólo indica si hay una diferencia significativa entre al menos una de las observaciones con el resto. Vemos que importa mucho ajustar los pesos para indicadores como IGD+, HV, IGD y en menor medida para Energía-S. Vemos que para dos dimensiones parece importar menos que pesos escojamos para el desempeño de todos los indicadores.
+Como se explicó en la Sección \ref{sec:pruebas_estadisticas}, para saber si un algoritmo tiene un desempeño diferente en un indicador dado usamos la prueba de Friedman \ref{sec:Friedman} implementada en la librería de \href{https://docs.scipy.org/doc/scipy/reference/stats.html}{scipy.stats}. En total obtenemos que un $25.37\%$ de los problemas presentan una diferencia significativa, es decir, se rechaza la hipótesis nula.
+
+Algunos resultados agregados de este procedimiento se pueden ver en las siguientes dos Figuras. En la primera imagen de la Figura \ref{fig:Fr_dim_IGDp} se usó el algoritmo con IGD+ mientras que en la Figura \ref{fig:Fr_dim_R2} R2. Podemos ver que en R2 existen mucho menos diferencias de acuerdo a Friedman.   La prueba sólo indica si hay una diferencia significativa entre al menos una de las observaciones con el resto. Vemos que importa mucho ajustar los pesos para indicadores como IGD+, HV, IGD y en menor medida para Energía-S. Vemos que para dos dimensiones parece importar menos que pesos escojamos para el desempeño de todos los indicadores. 
 
 \begin{figure}[H]
     \centering
@@ -228,7 +230,7 @@ Vemos de la Figura \ref{fig:borda_problema} que a mayor peso suele haber más vi
 
 \subsection{Agregación por número de objetivos}
 
-En esta sección se realizan agregaciones por número de objetivos de todos los conteos de borda. Es decir, estamos uniendo todos los indicadores sin importar si son de convergencia o distribución. Las siguientes Figuras\ref{fig:borda_obj_2}, \ref{fig:borda_obj_3}, \ref{fig:borda_obj_4}, \ref{fig:borda_obj_5}, \ref{fig:borda_obj_6} y  \ref{fig:borda_obj_7} nos muestran el número de victorias promedio para cada peso. Esto es, de todos los problemas considerados para cada número de objetivos, cuánto sale el conteo de borda de un valor fijo de $w_0$. Es decir, cuántas victorias tiene con respecto a todos los otros pesos.   
+En esta sección se realizan agregaciones por número de objetivos de todos los conteos de borda. Es decir, estamos uniendo todos los indicadores sin importar si son de convergencia o diversidad. Las siguientes Figuras\ref{fig:borda_obj_2}, \ref{fig:borda_obj_3}, \ref{fig:borda_obj_4}, \ref{fig:borda_obj_5}, \ref{fig:borda_obj_6} y  \ref{fig:borda_obj_7} nos muestran el número de victorias promedio para cada peso. Esto es, de todos los problemas considerados para cada número de objetivos, cuánto sale el conteo de borda de un valor fijo de $w_0$. Es decir, cuántas victorias tiene con respecto a todos los otros pesos.   
 
 \begin{figure} [H]
     \centering
@@ -344,7 +346,7 @@ En el caso de IGD, vemos en la Figura \ref{fig:borda_igd} que no se observa un c
 
 
 
-Para los indicadores de diversidad, en las Figuras \ref{fig:borda_senergy} y \ref{fig:borda_spd}, vemos que tenemos el comportamiento esperado para SPD, es decir, decrece el número de victorias de forma monótona conforme aumentamos el peso al indicador de convergencia. Sin embargo, la Energía-S parece tener un comportamiento opuesto al que esperaríamos, siguiendo más bien a los indicadores de convergencia. Este resultado es muy extraño ya que el algoritmo prioriza menos el indicador de SPD mientras más aumentamos $w_0$. Es decir, parece que para mejorar la Energía-S de nuestra aproximación final, no podríamos enfocarnos en mejorarla paso a paso. No podemos dar una explicación satisfactoria de porqué ocurre, pero sería interesante investigarlo en un trabajo futuro.
+Para los indicadores de diversidad, en las Figuras \ref{fig:borda_senergy} y \ref{fig:borda_spd}, vemos que tenemos el comportamiento esperado para ambos, es decir, decrece el número de victorias de forma monótona conforme aumentamos el peso al indicador de convergencia. Para R2 este ordenamiento no se mantiene para ninguno de los indicadores de diversidad y notamos que para IGD+ existe una mejora entre la combinación de pesos $w_0=(0.9,0.1)$ y la de $(0.001,0.999)$ lo que indicaría que para obtener una mejor diversidad entre estas dos elecciones conviene no maximizar la diversidad paso a paso.  
 
 % \begin{itemize}
 %     \item Mostrar diferentes visualizaciones
