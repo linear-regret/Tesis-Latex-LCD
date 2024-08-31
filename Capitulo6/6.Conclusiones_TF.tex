@@ -17,7 +17,7 @@ Se realizaron 10 experimentos con una semilla aleatoria distinta para cada una d
 Para medir las diferencias entre estas poblaciones de indicadores se usaron dos pruebas estadísticas. La primera que se realizó fue la de Friedman que nos indica si hay una diferencia significativa entre alguna combinación de parámetros. También se usó la prueba de Wilcoxon para ver en qué caso un indicador es mejor que otro. Hay que tener en cuenta que hay unos indicadores que se vuelven mejores al maximizarse y algunos se vuelven mejores al minimizarse.  
 
 % Hallazgos más importantes
-Se observan diferencias significativas en todos estos casos. Teniendo los indicadores de convergencia una preferencia por mayor peso a la parte de IGD+ o R2 en el estimador de densidad. Esto tiene sentido aunque a veces encontramos resultados que parecen indicar que para optimizar un indicador en el conjunto de aproximación final, no basta con optimizarlo paso con paso (como haría un algoritmo voraz). Sino que por el contrario, darle un peso mayor a un indicador de convergencia como Energía-S resultará en un desempeño mejor.
+Se observan diferencias significativas en todos estos casos. Teniendo los indicadores de convergencia una preferencia por mayor peso a la parte de IGD+ o R2 en el estimador de densidad. Esto tiene sentido aunque a veces encontramos resultados que parecen indicar que para optimizar un indicador en el conjunto de aproximación final, no basta con optimizarlo paso con paso (como haría un algoritmo voraz).
 
 Al cambiar el indicador de convergencia con el que se define el estimador de densidad del algoritmo de PFI-EMOA \cite{PFI} de IGD+ a R2 vemos que IGD+ obtiene mucho mejores resultados, como se puede observar en la Figura \ref{fig:R2_IGDp}.
 

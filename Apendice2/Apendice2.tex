@@ -1,0 +1,30 @@
+\chapter{Definición de problemas prueba}
+
+
+Dado 
+$$ z = \{z_1, \ldots, z_k, z_{k+1}, \ldots, z_n\} $$
+Minimizar
+$$ f_{m=1:M}(x) = x_M + S_m h_m(x_1, \ldots, x_{M-1}) $$
+donde $x_i =x_i(\vec{z})$, $S_m$ son factores de escala y $h_m$ son funciones de forma.
+
+
+
+$$    x = \{x_1, \ldots, x_M\} = \left\{ \max(t_M^{(p)}, A_1(t_1^{(p)} - 0.5) + 0.5), \ldots, \max(t_M^{(p)}, A_{M-1}(t_{M-1}^{(p)} - 0.5) + 0.5, t_M^{(p)}\} \right\} $$
+
+$$ t^{(p)} = \{t_1^{(p)}, \ldots, t_M^{(p)}\} \leftarrow [t^{(p)}_1 \leftarrow \ldots \leftarrow [t^{(p)}_M \leftarrow [z_{[0,1]})] $$
+
+$$ z_{0,1} = \{z_{1,0,1}, \ldots, z_{n,0,1}\} = \{z_1/z_{1,\max}, \ldots, z_n/z_{n,\max}\} $$
+
+
+donde $M$ es el número de objetivos, $x$ es un conjunto de $M$ parámetros subyacentes (donde $x_M$ es un parámetro de distancia subyacente, y $x_1:M-1$ son parámetros de posición subyacentes), $z$ es un conjunto de $k + l = n \geq M$ parámetros de trabajo (los primeros $k$ y los últimos $l$ parámetros de trabajo son parámetros relacionados con la posición y la distancia, respectivamente), $A_{1:M-1} \in \{0, 1\}$ son constantes de degeneración (para cada $A_i = 0$, la dimensionalidad del frente óptimo de Pareto se reduce en uno), $h_{1:M}$ son funciones de forma, $S_{1:M} > 0$ son constantes de escala, y $t^{(p)}$ son vectores de transición, donde la flecha  $\leftarrow$ indica que cada vector de transición se crea a partir de otro vector mediante funciones de transformación. El dominio de todos los $z_i \in Z$ es $[0, z_{i,\max}]$ (el límite inferior siempre es cero por conveniencia), donde todos los $z_{i,\max} > 0$. Note que todos los $x_i \in X$ tendrán dominio $[0, 1]$.
+
+Se pueden hacer algunas observaciones sobre el formalismo anterior: sustituir en $x_M = 0$ y despreciar todos los vectores de transición proporciona una ecuación paramétrica que cubre y es cubierta por el frente óptimo de Pareto del problema real, los parámetros de trabajo pueden tener dominios disímiles (lo que animaría a los EAs a normalizar los dominios de los parámetros), y emplear constantes de escalado disímiles resulta en rangos de compromiso del frente óptimo de Pareto disímiles (esto es más representativo de problemas del mundo real y fomenta que los EAs normalicen los valores de aptitud).
+
+Las funciones objetivo $f_i(x)$ para WFG1 se calculan como:
+$$f_i(x) = x_k + S_i \cdot h_i(x_1, \ldots, x_{k-1}) $$
+donde:
+\begin{itemize}
+    \item $x_k$ es un parámetro de posición.
+    \item $S_i$ son constantes de escala.
+    \item $h_i$ son funciones de forma que definen la forma del frente de Pareto.
+\end{itemize}

@@ -14,7 +14,7 @@ El capítulo se organizará de la siguiente forma: en la Sección \ref{sec:QIs} 
 Después, en la Sección \ref{sec:SMS-EMOA} estudiaremos un algoritmos antecedente al usado en este trabajo. El antecedente es el algoritmo prototípico IB-EMOA, llamado SMS-EMOA. Continuaremos con el algoritmo usado en este trabajo en la Sección \ref{sec:PFI-EMOA}. Dicho algoritmo recibe el nombre de PFI-EMOA y fue diseñado para combinar dos indicadores de calidad dentro de su proceso de selección. Finalmente, concluiremos en la Sección \ref{sec:pruebas_estadisticas} con una breve descripción de cómo se comparan diferentes algoritmos entre sí usando pruebas estadísticas.
 
 \section{Indicadores de calidad} \label{sec:QIs}
-Al ser un MOP, por definición, un problema que requiere hacer concesiones en cada objetivo, necesariamente habrá varias maneras de determinar qué conjunto es mejor. La primera de ellas concierne a la dominancia de Pareto entre conjuntos de aproximaciones, siendo esta una extensión del concepto de dominancia entre puntos, como vimos en la Sección \ref{sec:Dominancia_Pareto}, como ahora los puntos no se comparan uno a uno, existen más posibilidades que cubrir, y por ende, más elecciones que tomar. Considerando a dos conjuntos de soluciones $A,B \subseteq \mathbb{R}^m$ en el espacio de objetivos, existen varias maneras de compararlos. A continuación veremos algunas de ellas, definidas en \cite{tesis_mst_guillermo}.
+Al ser un MOP, por definición, un problema que requiere hacer concesiones en cada objetivo, necesariamente habrá varias maneras de comparar dos conjuntos de aproximación para decidir qué conjunto es mejor. La primera de ellas concierne a la dominancia de Pareto entre conjuntos de aproximaciones, siendo esta una extensión del concepto de dominancia entre puntos, como vimos en la Sección \ref{sec:Dominancia_Pareto}. Al extender el concepto a dominancia entre conjuntos, ya no se hace una sólo comparación. Por lo tanto, existen más posibilidades que cubrir, y por ende, más elecciones que tomar. Considerando a dos conjuntos de soluciones $A,B \subseteq \mathbb{R}^m$ en el espacio de objetivos,  veremos algunas manerad de compararlos, definidas en \cite{tesis_mst_guillermo}.
 
 % Se dice que $x$ \textbf{domina débilmente} a $y$, denotado como $x \preccurlyeq y$  si $f_i(x)\leq f_i(y)$ para toda $i\in\{1,\ldots,m\}$; es decir $x$ no es peor (mayor si queremos maximizar o menor si queremos minimizar) que $y$ en ningún objetivo \footnote{Algunas definiciones también piden que $x\neq y$}.  Si además existe un objetivo tal que es peor en alguna dirección, es decir $\exists i \in\{1,\ldots,m\}$ tal que $f_i(x)< f_i(y)$  entonces $x$ \textbf{domina} a $y$, denotado como $x \prec y$. Aún podemos pedir que la relación sea más clara si pedimos $f_i(x)< f_i(y)$, $\forall i \in\{1,\ldots,m\}$. A esta relación se le conoce como \textbf{dominancia estricta}. Esta propiedad dice que una solución es mejor a la otra en todos sus objetivos y se denota como $x \prec \prec y$.
 
@@ -24,11 +24,12 @@ Al ser un MOP, por definición, un problema que requiere hacer concesiones en ca
 % Al intentar definir una única noción de que un conjunto de soluciones sea mejor que otro encontranos, al igual que en la noción de dominancia, que es útil crear definiciones cada vez más estrictas. A continuación se listan algunas de ellas: 
 
 \begin{itemize}
-    \item \textbf{Definición 1 (Dominancia Débil)}: Un conjunto \( A \) se dice que domina débilmente a \( B \) si cada solución \( b \in B \) está débilmente dominada por al menos una solución \( a \in A \). Se denota $ A \preceq B$.
-    \item \textbf{Definición 2 (Dominancia)}: Un conjunto \( A \) se dice que domina a \( B \) si cada solución \( b \in B \) está dominada por al menos una solución \( a \in A \). Se denota $A \prec B$. Es importante recalcar que esta medida de dominancia define un orden parcial en el espacio de aproximaciones.
-    \item \textbf{Definición 3 (Dominancia Estricta)}: Un conjunto \( A \) se dice que domina estrictamente a \( B \) si cada solución \( b \in B \) está estrictamente dominada por al menos una solución \( a \in A \). Se denota $ A \prec \prec B$, también es llamado sobredesempeño completo $A \ \ \mathcal{O}_C \ B$.
-    \item \textbf{Definición 4 (Sobredesempeño Fuerte)}: Un conjunto \( A \) se dice que rinde fuertemente a \( B \) si \( A \) domina débilmente a \( B \) y además existe al menos un par de soluciones \( a \in A \) y \( b \in B \) tal que \( a \) domina a \( b \). Denotado $A \ \ \mathcal{O}_S \ B$.
-    \item \textbf{Definición 5 (Mejor)}: Un conjunto \( A \) se dice que es mejor que \( B \) si \( A \) domina débilmente a \( B \) y además existe al menos una solución \( a \in A \) que no está débilmente dominada por ninguna solución en \( B \). Se denota a con $ A \vartriangleleft   B$, también conocida como sobredesempeño débil ($A \ \ \mathcal{O}_W \ B$). Esta es la forma más general y menos restrictiva de las jerarquías entre conjuntos. Es equivalente a decir que $A \preceq B$, pero $B \npreceq A$. En palabras es que $A$ es al menos tan bueno como $B$, mientras que $B$ no es tan bueno como $A$. 
+    \item \textbf{Definición 1 (Dominancia Débil)}: Un conjunto \( A \) se dice que domina débilmente a \( B \) si cada solución \( b \in B \) está débilmente dominada por al menos una solución \( a \in A \) y $A\neq B$. Se denota $ A \preceq B$.  Esta es la forma más general y menos restrictiva de las jerarquías entre conjuntos.
+    \item \textbf{Definición 2 (Mejor)}: U Se denota a con $ A \vartriangleleft   B$, también conocida como sobredesempeño débil ($A \ \ \mathcal{O}_W \ B$). Es equivalente a decir que $A \preceq B$, pero $B \npreceq A$. En palabras es que $A$ es al menos tan bueno como $B$, mientras que $B$ no es tan bueno como $A$. 
+    
+    \item \textbf{Definición 3 (Sobredesempeño Fuerte)}: Un conjunto \( A \) se dice que rinde fuertemente a \( B \) si \( A \) domina débilmente a \( B \) y además existe al menos un par de soluciones \( a \in A \) y \( b \in B \) tal que \( a \) domina a \( b \). Denotado $A \ \ \mathcal{O}_S \ B$.
+    \item \textbf{Definición 4 (Dominancia)}: Un conjunto \( A \) se dice que domina a \( B \) si cada solución \( b \in B \) está dominada por al menos una solución \( a \in A \). Se denota $A \prec B$. Es importante recalcar que esta medida de dominancia define un orden parcial en el espacio de aproximaciones.
+    \item \textbf{Definición 5 (Dominancia Estricta)}: Un conjunto \( A \) se dice que domina estrictamente a \( B \) si cada solución \( b \in B \) está estrictamente dominada por al menos una solución \( a \in A \). Se denota $ A \prec \prec B$, también es llamado sobredesempeño completo $A \ \ \mathcal{O}_C \ B$.
 \end{itemize}
 
 
@@ -41,7 +42,7 @@ Es útil ver las contenciones de las definiciones previas ya que una solución s
 \end{align}
 
 
-En un problema, sin embargo, las nociones de dominancia previamente definidas no se tienen que alinear con todas las preferencias de un tomador de decisiones. Es decir, es posible que un conjunto $A$ que sea, por ejemplo, \textbf{mejor} (en el sentido de la Definición 5) que otro $B$ y que, sin embargo, haya soluciones en $B$ que dominen a algunas de $A$. Para lidiar con estos problemas sería preferible encontrar un conjunto de soluciones que sea una buena representación del frente de Pareto. Así, al preguntarnos qué características son deseables en un algoritmo que busque una representación fidedigna al frente de Pareto encontramos la razón de la construcción de los  \textbf{indicadores de calidad} (QI por sus siglas en inglés).
+En un problema, sin embargo, las nociones de dominancia previamente definidas no se tienen que alinear con todas las preferencias de un tomador de decisiones. Es decir, es posible que un conjunto $A$ que sea, por ejemplo, \textbf{mejor} (en el sentido de la Definición 2) que otro $B$ y que, sin embargo, haya soluciones en $B$ que dominen a algunas de $A$. Para lidiar con estos problemas sería preferible encontrar un conjunto de soluciones que sea una buena representación del frente de Pareto. Así, al preguntarnos qué características son deseables en un algoritmo que busque una representación fidedigna al frente de Pareto encontramos la razón de la construcción de los  \textbf{indicadores de calidad} (QI por sus siglas en inglés).
 
 
 Con el fin de estudiar propiedades generales de los frentes, se han propuesto categorías de características deseables en la representación del frente:
@@ -50,7 +51,7 @@ Con el fin de estudiar propiedades generales de los frentes, se han propuesto ca
     \item \textbf{Proximidad o convergencia}: La proximidad que tiene con el frente de Pareto. El tipo de relación que medimos con las definiciones 1 a 5. 
     \item \textbf{Extensión}:  El tamaño de la región que ocupa el conjunto de soluciones. 
     \item \textbf{Uniformidad}: Que tan equidistantes son las soluciones entre sí.
-    \item \textbf{Diversidad}: Como extensión y uniformidad suelen intersectar sus objetivos se les suele combinar en la categoría de diversidad, como, por ejemplo, en el estimadores de densidad de NSGA-II, explicados en la Sección \ref{sec:nsga2}. 
+    \item \textbf{Diversidad}: Como extensión y uniformidad suelen intersectar sus objetivos se les suele combinar en la categoría de diversidad, como, por ejemplo, en el estimador de densidad de NSGA-II, explicado en la Sección \ref{sec:nsga2}. 
 \end{itemize}
 
 Estos conceptos se  entienden mejor al estudiar la Figura \ref{fig:carac_deseables_aprox}. De las características previamente mencionadas tenemos las siguientes: 
@@ -77,15 +78,17 @@ Estos indicadores también se pueden clasificar de acuerdo al número de conjunt
 Al ser un mapeo a los números reales, es posible definir un orden total en $\Psi$ a través de un indicador unario. Dicho orden puede coincidir con aquel de la dominancia de Pareto en el siguiente sentido
 
 \begin{equation} \label{eq:consistente_Pareto}
-    A \preceq B \implies I(A) < I(B).
+    A \vartriangleleft B \implies I(A) < I(B).
 \end{equation}
 A esta propiedad del indicador $I$ se le conoce como \textbf{consistencia de Pareto}. Cuando la condición es de desigualdad, es decir 
 
 \begin{equation} \label{eq:consistente_debil_Pareto}
-    A \preceq B \implies I(A)\leq I(B),
+    A \vartriangleleft B \implies I(A)\leq I(B),
 \end{equation}
 
-se le llama consistencia débil. No siempre es posible que nuestro indicador sea consistente de Pareto, por ejemplo, en categorías como diversidad no necesariamente se alinearan los objetivos de esparcir un conjunto con aquellos de encontrar uno menos dominado. Esto se debe a que el esfuerzo de definir indicadores que no sólo traten de dominancia es para no caer en las situaciones donde tratar el problema de esta forma lleva a complicaciones como que el algoritmo se estanque.
+se le llama consistencia débil.
+
+No siempre es posible que nuestro indicador sea consistente de Pareto, por ejemplo, en categorías como diversidad no necesariamente se alinearan los objetivos de esparcir un conjunto con aquellos de encontrar uno menos dominado. Esto se debe a que el esfuerzo de definir indicadores que no sólo traten de dominancia es para no caer en las situaciones donde tratar el problema de esta forma lleva a complicaciones como que el algoritmo se estanque.
 
 A continuación definiremos brevemente los indicadores usados en este trabajo .
 
@@ -218,8 +221,13 @@ El indicador $R2$ pertenece a un conjunto más general de indicadores conocido c
 donde  $u^*(\mathcal{A})$ es el mejor valor que se logra en el conjunto $A$ dado esta función de utilidad. Cuando la información sobre la preferencia del tomador de decisiones no se conoce se puede suponer una función uniforme sobre las funciones de utilidad. Si el conjunto de funciones de utilidad es discreto se puede cambiar la integral por una suma. Además, al comparar el $R2$ de dos conjuntos distintos, podemos ver que el segundo término de \ref{eq:R2_completo} se cancela en la diferencia. De modo que bajo estas características tenemos
 
 \begin{equation} 
-    R2(\mathcal{A})=\frac{1}{|W|}\sum_{w\in W} h(u)u^*(\mathcal{A},w), \nonumber
+    R2(\mathcal{A})=\frac{1}{|W|}\sum_{w\in W} h(u)u(\mathcal{A},w), \nonumber
 \end{equation}
+
+$W$ es un conjunto de pesos\\
+$h(u)$ es una función de densidad sobre las funciones de utilidad\\
+$u(\mathcal{A},w)$ es una función de utilidad.
+
 para la función $u(\mathcal{A},w)$ se pueden usar escalarizaciones comunes como suma ponderada \eqref{eq:suma_ponderada} o la función de escalarización de Tchebycheff \eqref{eq:tchebychev}. Este indicador tiene la ventaja de tener un costo computacional relativamente pequeño, pero tiene menor precisión que otros indicadores que consideran un conjunto continuo de pesos como el IPF. 
 
 % Además cumple con las siguientes características \cite{tesis_phd_guillermo}
@@ -232,13 +240,13 @@ para la función $u(\mathcal{A},w)$ se pueden usar escalarizaciones comunes como
 % estan usualmente uniformemente distribuidas, y (4) es mucho menos costoso computacionalmente
 % que HV.
 
-En este trabajo usamos un conjunto de funciones de utilización conocidas como ASF (Achievement Scalarizing Function) que están dadas en función un conjunto de vectores de pesos y un vector referencia $z$ que se toma convexos\footnote{Los vectores convexos son no negativos $\lambda_i\geq 0, \forall i$ y suman a uno $\sum_i \lambda_i =1$} $\Lambda$ por
+En este trabajo usamos un conjunto de funciones de utilización conocidas como ASF (Achievement Scalarizing Function) que están dadas en función un conjunto de vectores de pesos convexos\footnote{Los vectores convexos, son no negativos $\lambda_i\geq 0, \forall i$ y suman a uno $\sum_i \lambda_i =1$} $\Lambda$ y un vector de referencia $z$. 
 
 \begin{equation}\label{eq:R2}
-    R2(\mathcal{A}, \Lambda, \mathbf{z}) = \frac{1}{|\Lambda|} \sum_{\mathbf{\lambda} \in \Lambda} \min_{\mathbf{a} \in \mathcal{A}} \left\{ \max_{i \in \{1, \ldots, m\}} \left\{ \frac{|a_i - z_i|}{\lambda_i} \right\} \right\}
+    R2(\mathcal{A}, \Lambda, \mathbf{z}) = \frac{1}{|\Lambda|} \sum_{\mathbf{\lambda} \in \Lambda} \max_{\mathbf{a} \in \mathcal{A}} \left\{ \max_{i \in \{1, \ldots, m\}} \lambda_i \left\{ |a_i - z_i|\right\} \right\}
 \end{equation}
 
-La región definida por los vectores convexos forman un simplejo en $\mathbb{R}^m$. Los puntos de ese simplejo definirán las funciones de utilidad que evaluamos en \ref{eq:R2}. Existen métodos para distribuir estos puntos como SLD (Simple Latex Desing). En este trabajo usamos un método definido para maximizar la Energí-S de Riesz de los vectores en el simplejo. 
+La región definida por los vectores convexos forman un simplejo en $\mathbb{R}^m$. Los puntos de ese simplejo definirán las funciones de utilidad que evaluamos en \ref{eq:R2}. Existen métodos para distribuir estos puntos como SLD (Simple Latex Desing). En este trabajo usamos un método definido para maximizar la Energía-S de Riesz de los vectores en el simplejo. 
 
 % En la Figura \ref{fig:R2} vemos el cálculo del indicador R2, los vectores de pesos que nos ayudan a materializar las preferencias de la función de utilidad.
 
@@ -294,7 +302,7 @@ En esta sección se revisa una clasificación de EMOAs además de dar un ejemplo
 
 \subsection*{No-Elitistas no-basados en optimalidad de Pareto} \label{sec:VEGA}
 
-Para ejemplificar esta clase de algoritmos explicaremos el primer EMOA propuesto por Schaeffer \cite{schafferMultipleObjectiveOptimization1984} llamado VEGA (Vector Evaluation Genetic Algorithm). Este algoritmo consiste en dividir la población total de $M$ individuos en subpoblaciones y hacer que cada uno de ellos evolucionara para resolver uno de los $k$ objetivos en un algoritmo no-elitista. Después en la siguiente generación, se revolvían de manera aleatoria los individuos y se volvían a dividir en subpoblaciones para atacar cada uno de los objetivos que, para cada individuo, podría ser un objetivo distinto al que se le había asignado previamente, podemos ver una representación en la Figura \ref{fig:VEGA}, tomada de \cite{coelloEvolutionaryAlgorithmsSolving}.
+Para ejemplificar esta clase de algoritmos explicaremos el primer EMOA propuesto por Schaeffer \cite{schafferMultipleObjectiveOptimization1984} llamado VEGA (Vector Evaluation Genetic Algorithm). Este algoritmo consiste en dividir la población total de $M$ individuos en subpoblaciones y hacer que cada uno de ellos evolucionara para resolver uno de los $k$ objetivos en un algoritmo no-elitista. Después en la siguiente generación, se revolvían de manera aleatoria los individuos y se volvían a dividir en subpoblaciones para atacar cada uno de los objetivos que, para cada individuo, podría ser un objetivo distinto al que se le había asignado previamente, podemos ver una representación en la Figura \ref{fig:VEGA}, adaptada de \cite{coelloEvolutionaryAlgorithmsSolving}.
 
 \begin{figure}[H]
     \centering
@@ -324,19 +332,65 @@ Este algoritmo también es no-elitista lo que hace muy costoso el cálculo de lo
 
 Para ejemplificar este tipo de algoritmos se explica brevemente el funcionamiento del algoritmo NSGA-II.  
 
-En el 2000 se publicó \cite{debFastElitistNondominated2000} una actualización del algoritmo anterior que ataca el problema de la complejidad computacional y el de la diversidad de las soluciones proponiendo dos mecanismos diferentes. Para el problema de la complejidad ahora se usa un enfoque elitista. De esta forma se pueden conservar rankings de generaciones anteriores y no se tiene la carga computacional de estarlos calculando constantemente. Además de esto para asegurar que los individuos de una población no se concentran en una región pequeña del espacio, se suelen usar algún \textbf{estimador de densidad} que mide que tan cerca están los puntos y puede lograr que no existan demasiados aglomerados en una región pequeña del espacio. En NSGA-II se usa un estimador de densidad llamado \textbf{crowding distance} en su operador de selección que se encarga de que las soluciones estén al menos una distancia mínima separadas entre sí. 
+En el 2000 se publicó \cite{debFastElitistNondominated2000} una actualización del algoritmo anterior que ataca el problema de la complejidad computacional y el de la diversidad de las soluciones proponiendo dos mecanismos diferentes. Para el problema de la complejidad ahora se usa un enfoque elitista. De esta forma se pueden conservar rankings de generaciones anteriores y no se tiene la carga computacional de estarlos calculando constantemente. Además de esto para asegurar que los individuos de una población no se concentran en una región pequeña del espacio, se suelen usar algún \textbf{estimador de densidad} que mide que tan cerca están los puntos y puede lograr que no existan demasiados aglomerados en una región pequeña del espacio. En NSGA-II se usa un estimador de densidad llamado \textbf{crowding distance} en su operador de selección para calcularlo, primero se ordenan los valores de los objetivos en cada una de las direcciones. A los puntos extremos en este ordenamiento se les asigna una distancia infinita porque no se quiere que se eliminen de la población. Para el individuo $i$-ésimo se realiza el siguiente cálculo
 
+\begin{equation} \label{eq:crowding_distance}    
+    \text{crowding distance} (d_i) = \sum_{m=1}^M \left( \frac{f_m^{(i+1)} - f_m^{(i-1)}}{f_m^{\text{max}} - f_m^{\text{min}}} \right)
+\end{equation}
 
-Este algoritmo ha sido muy exitoso siendo la referencia contra la que se comparan la mayoría de las propuestas de EMOAs. Su capacidad exploratoria es cuestionable  parece tener dificultad generando soluciones no dominadas en regiones aisladas como cuando se incrementa el número de dimensiones \cite{coelloEvolutionaryAlgorithmsSolving}. Por sus características se le conoce como un algoritmo \textbf{Elitista basado en dominancia de Pareto}.
+donde:
+\begin{itemize}
+    \item \(d_i\) es la \text{crowding distance} para el individuo \(i\).
+    \item \(M\) es el número de objetivos.
+    \item \(f_m\) representa la función objetivo \(m\).
+    \item \(f_m^{(i+1)}\) y \(f_m^{(i-1)}\) son los valores de la función objetivo \(m\) de los individuos adyacentes a \(i\) en la lista ordenada.
+    \item \(f_m^{\text{max}}\) y \(f_m^{\text{min}}\) son los valores máximos y mínimos de la función objetivo \(m\) entre todos los individuos.
+\end{itemize}
 
-Existen muchos otros EMOAs además de los que hemos hablado en esta sección, sin embargo, basta con estos para motivar y definir el algoritmo que usaremos en este trabajo. Para eso, la siguiente sección revisa el concepto de indicadores de calidad para aproximaciones al frente de Pareto. 
+Este operador mide el perímetro del cuadrado que separa a una solución de sus vecinos más cercanos en todas direcciones, como podemos ver en la Figura \ref{fig:crowding_distance}.  Cuando existe algún empate en el rango de dos soluciones, la solución que tenga mayor crowding distance es preferida. De este modo se promueve que la densidad de las soluciones sea menor y esto ayuda a la diversidad de la población. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{./Figuras/crowding_distance.pdf}
+    \caption{Vemos el rectángulo con el que se calcula la crowding distance de la solución de enmedio.}
+    \label{fig:crowding_distance}
+\end{figure}
+
+\begin{algorithm}
+    \caption{Algoritmo NSGA-II}
+    \begin{algorithmic}[1]
+    \setlength{\itemsep}{1pt} % Set the spacing between items
+\setlength{\parskip}{0pt} % Set paragraph spacing to zero
+    \State $P_0 \gets \text{InicializarPoblación()}$
+    \State $t \gets 0$
+    \While{\text{Criterio de Terminación NO CUMPLIDO}}
+        \State $Q_t \gets \text{OperacionesGenéticas}(P_t)$
+        \State $R_t \gets P_t \cup Q_t$
+        \State $\{F_1, F_2, \ldots\} \gets \text{NDS}(R_t)$
+        \State $P_{t+1} \gets \text{vacío}$
+        \State $i \gets 1$
+        \While{$|P_{t+1}| + |F_i| \leq N$}
+            \State $\text{CrowdingDistance}(F_i)$
+            \State $P_{t+1} \gets P_{t+1} \cup F_i$
+            \State $i \gets i + 1$
+        \EndWhile
+        \State $F_i \gets \text{Ordenar}(F_i, \text{por: CrowdingDistance, desc})$
+        \State $P_{t+1} \gets P_{t+1} \cup F_i[1:(N - |P_{t+1}|)]$
+        \State $t \gets t + 1$
+    \EndWhile
+    \end{algorithmic}
+\end{algorithm}
+
+Este algoritmo ha sido muy exitoso siendo la referencia contra la que se comparan la mayoría de las propuestas de EMOAs. Su capacidad exploratoria es cuestionable, parece tener dificultad generando soluciones no dominadas en regiones aisladas como cuando se incrementa el número de dimensiones \cite{coelloEvolutionaryAlgorithmsSolving}. Por sus características se le conoce como un algoritmo \textbf{Elitista basado en dominancia de Pareto}.
+
+Existen muchos otros EMOAs además de los que hemos hablado en esta sección, sin embargo, con los ya expuestos basta para motivar y definir el algoritmo que usaremos en este trabajo. Para eso, la siguiente sección revisa el concepto de indicadores de calidad para aproximaciones al frente de Pareto. 
 
 \section{Métodos basados en indicadores de calidad} \label{sec:Metodos_QI}
 
 Al igual que en muchos problemas que lidian con dimensiones altas, los algoritmos multiobjetivo sufren de efectos de escalamiento al aumentar las dimensiones del espacio. Es decir, el problema de ir incrementando las dimensiones no requiere solamente cambiar parámetros en una función, sino que requiere de una manera distinta de abordar el problema.
 Para lograr una buena cobertura del Frente de Pareto, el número total de puntos (soluciones) necesarios escala exponencialmente con el número de funciones objetivo, lo que hace que muchos enfoques existentes sean inviables a medida que aumenta la dimensionalidad del espacio objetivo \cite{tanParetoOptimizationSmall2023}. 
 
-Esto se debe, en el caso de algoritmos multiobjetivo, a que un algoritmo podrá generar con facilidad un conjunto que no esté dominado con respecto a otro sin que esto haga que los puntos necesariamente se aproximen al frente de Pareto. De acuerdo a lo visto en la Sección de dominancia de Pareto \ref{sec:Dominancia_Pareto}, el espacio de estados dominados al hacer resolver un problema de minimización corresponde a aquellos que están en el cuadrante $++$ que, como su nombre lo indica, cubre un cuarto de todo el espacio. Incrementando la dimensión ahora tenemos más combinaciones de signos que no están mutuamente no dominados, como podemos observar en la Figura \ref{fig:maldicion_dim} donde tenemos en la primera figura de la izquierda el cuadrante de región dominada desde el origen. Después en la de en medio el octante en 3 dimensiones y finalmente vemos una curva de cuánto espacio ocupa la región dominada por el origen mientras incrementamos el número de dimensiones. Al ser el número de dimensiones más grande, nuestro algoritmo puede pasar mucho tiempo buscando en el espacio de estados que no llevan a una aproximación cada vez mejor del frente real de Pareto. 
+Esto se debe, en el caso de algoritmos multiobjetivo, a que un algoritmo podrá generar con facilidad un conjunto que no esté dominado con respecto a otro sin que esto haga que los puntos necesariamente se aproximen al frente de Pareto. De acuerdo a lo visto en la Sección de dominancia de Pareto \ref{sec:Dominancia_Pareto}, el espacio de estados que dominan a un punto dado en el espacio de objetivos corresponde a aquellos que están en el cuadrante $--$ que, como su nombre lo indica, cubre un cuarto de todo el espacio. Incrementando la el número de objetivos, ahora tenemos más combinaciones de signos que no están mutuamente no dominados, como podemos observar en la Figura \ref{fig:maldicion_dim} donde tenemos en la primera figura de la izquierda el cuadrante de región dominada desde el origen. Después, en la de en medio, el octante en para tres objetivos y finalmente vemos una curva de cuánto espacio ocupa la región dominada por el origen mientras incrementamos el número de objtetivos. Al ser el número de dimensiones más grande, nuestro algoritmo puede pasar mucho tiempo buscando en el espacio de estados que no llevan a una aproximación cada vez mejor del frente real de Pareto. 
 
 \begin{figure}[H]
     \centering
@@ -345,11 +399,11 @@ Esto se debe, en el caso de algoritmos multiobjetivo, a que un algoritmo podrá 
     \label{fig:maldicion_dim}
 \end{figure}
 
-Una manera de resolver este problema es reducir la dimensión del espacio objetivo de los problemas estudiados, este enfoque se puede seguir usando escalarizaciones o definiendo cantidades útiles, esto último es lo que pretenden hacer los indicadores de calidad que definiremos en esta sección. Estos indicadores son una propiedad de los conjuntos de soluciones que resume sus características en valores que expresan, por ejemplo, qué tan separados están los individuos, cuántos individuos hay, qué tanto rango abarcan, qué tan cerca están de converger a un conjunto de referencia, qué tan uniformemente están separados. Los indicadores no se usan explícitamente para reducir las dimensiones del problema; es decir, encontrando el frente de Pareto en el espacio de los indicadores, sino que se usa esta información a mayor nivel de la aproximación para tomar decisiones acerca de, por ejemplo, que solución mantener en caso de un empate. Los Indicadores de calidad también son importantes para comparar algoritmos, ya que, como veremos a continuación es difícil saber cuándo una aproximación al frente de Pareto es mejor a otra. 
+Una manera de resolver este problema es reducir la dimensión del espacio objetivo de los problemas estudiados, este enfoque se puede seguir usando escalarizaciones o definiendo cantidades útiles, esto último es lo que pretenden hacer los indicadores de calidad que definiremos en esta sección. Como mencionamos en la Sección \ref{sec:QIs}, los indicadores de calidad son propiedades de los conjuntos de soluciones que resumen sus características en valores que expresan, por ejemplo, qué tan separados están los individuos, cuántos individuos hay, qué tanto rango abarcan, qué tan cerca están de converger a un conjunto de referencia, qué tan uniformemente están separados, etc. Los indicadores no se usan explícitamente para reducir las dimensiones del problema; es decir, encontrando el frente de Pareto en el espacio de los indicadores, sino que se usa esta información a mayor nivel de la aproximación para tomar decisiones acerca de, por ejemplo, que solución mantener en caso de un empate. Los Indicadores de calidad también son importantes para comparar algoritmos, ya que, como veremos a continuación, es difícil saber cuándo una aproximación al frente de Pareto es mejor a otra. 
 
 \subsection*{SMS-EMOA} \label{sec:SMS-EMOA}
 
-Habiendo definido los indicadores y los algoritmos previos, en esta sección describiremos uno de los primeros IB-EMOAs llamado S Metric Selection-EMOA (SMS-EMOA) \cite{SMS-EMOA}. Este algoritmo es muy parecido a aquel de NSGA-II, que revisamos en la Sección \ref{sec:nsga2}, ya que también es no-elitista y usa non-dominated sorting. Sin embargo, en vez de usar el estimador de densidad basado en crowding distance utiliza un indicador de hipervolumen, además de esto es un algoritmo que cae en una familia de AE conocidos como steady-state. Esto significa que solamente se genera un hijo en cada una de las evaluaciones de la función de selección; es un algoritmo $\mu+1$. Se realiza de esta manera ya que, al usar el HV, se tiene que encontrar el individuo que menos contribuye en su maximización de toda la población de tamaño $N$. Así, se usa la Ecuación \eqref{eq:Contribucion} para iterar sobre los individuos y escoger el que se eliminará en la siguiente generación. Si se quedaran dos individuos nuevos, entonces habría que hacer $\binom{N}{2}=\frac{N(N-1)}{2}=O(N^2)$ comparaciones de modo que el algoritmo se volvería muy costoso. En el Algoritmo \ref{alg:SMS-EMOA} podemos ver el pseudocódigo de SMS-EMOA.
+Habiendo definido los indicadores y los algoritmos previos, en esta sección describiremos uno de los primeros IB-EMOAs llamado S Metric Selection-EMOA (SMS-EMOA) \cite{SMS-EMOA}. Este algoritmo es muy parecido a aquel de NSGA-II, que revisamos en la Sección \ref{sec:nsga2}, ya que también es no-elitista y usa non-dominated sorting. Sin embargo, en vez de usar el estimador de densidad basado en crowding distance utiliza un indicador de hipervolumen, además de esto es un algoritmo que cae en una familia de AE conocidos como steady-state. Esto significa que solamente se genera un hijo en cada una de las evaluaciones de la función de selección; es decir, es un algoritmo $\mu+1$. Se realiza de esta manera ya que, al usar el HV, se tiene que encontrar el individuo que menos contribuye en su maximización de toda la población de tamaño $N$. Así, se usa la Ecuación \eqref{eq:Contribucion} para iterar sobre los individuos y escoger el que se eliminará en la siguiente generación. Si se quedaran dos individuos nuevos, entonces habría que hacer $\binom{N}{2}=\frac{N(N-1)}{2}=O(N^2)$ comparaciones de modo que el algoritmo se volvería muy costoso. En el Algoritmo \ref{alg:SMS-EMOA} podemos ver el pseudocódigo de SMS-EMOA.
 
 \begin{algorithm}
     \caption{SMS-EMOA}\label{alg:SMS-EMOA}
@@ -361,7 +415,7 @@ Habiendo definido los indicadores y los algoritmos previos, en esta sección des
         
         $q_{t+1}$ = genera($P_t$)
         
-        $\{\mathcal{R_1},\ldots,\mathcal{R}_v\}$ =fast-nds($P_t \cup \{q_{t+1}\})$
+        $\{\mathcal{R}_1,\ldots,\mathcal{R}_v\}$ =fast-nds($P_t \cup \{q_{t+1}\})$
         
         $r=\text{argmin}_{S\in \mathcal{R}_v}\left( \text{HV}(s,\mathcal{R_v}) \right)$
         
@@ -374,13 +428,13 @@ Habiendo definido los indicadores y los algoritmos previos, en esta sección des
     \end{algorithmic}
 \end{algorithm}
 
-Este algoritmo es bueno en tareas que NSGA-II no lo era como aumentando el número de objetivos hasta 4. El cálculo del HV para dimensiones mayores se vuelve costoso computacionalmente y, como se mencionó anteriormente, el cálculo es dependiente de la elección del punto de referencia. Esto puede afectar la diversidad y convergencia de las soluciones obtenidas.
+Este algoritmo es bueno en tareas que NSGA-II no lo era, como aumentando el número de objetivos hasta 4. El cálculo del HV para dimensiones mayores se vuelve costoso computacionalmente y, como se mencionó anteriormente, el cálculo es dependiente de la elección del punto de referencia. Esto puede afectar la diversidad y convergencia de las soluciones obtenidas.
 
 Se han hecho muchos IB-EMOAs que, al igual que SMS-EMOA sólo utilizan uno de ellos para guiar su exploración y explotación del espacio de estados. Por lo tanto, heredan las virtudes y los defectos de depender tanto de una cualidad del conjunto de soluciones que se va generando, o del conjunto de referencia del frente de Pareto. Por ejemplo, los basados en HV generan muchas soluciones alrededor de la \emph{rodilla} y las fronteras del frente de Pareto, mientras que producen soluciones bien distribuidas para frentes convexos y lineales, además de tener buen desempeño en frentes degenerados \cite{HV_reference}, \cite{SMS-EMOA}. Los que están basados en R2, visto en la Sección \ref{sec:R2}, tienen buena distribución en frentes cóncavos, pero no hacen lo mismo para frentes convexos, degenerados o desconectados, dado a que los vectores de peso convexos intersectan esas geometría \cite{performance_pareto_front}, \cite{R2-EMOA}. Por esta razón, una extensión natural a los IB-EMOAs de un indicador, es usar varios indicadores para que sus objetivos estén en contraste, que puedan evitar problemas de sobre-especialización y que no sean dependientes de la forma del frente de Pareto.  
 
 \section{PFI-EMOA} \label{sec:PFI-EMOA}
 
-En esta sección se detalla el algoritmo usado en este trabajo. Recibe el nombre de Pareto Front Invariant EMOA (PFI-EMOA) y nace de la necesidad de encontrar un algoritmo que funcione para muchas dimensiones y a la vez que no tenga las restricciones mencionadas en el último párrafo de la sección anterior. La idea principal de este algoritmo es seguir con el marco principal de SMS-EMOA; es decir, usar non-dominated sorting para rankear las soluciones y usar un algoritmo de steady-state para no hacer muchas comparaciones de contribuciones a indicadores. La diferencia principal es que se reemplaza el estimador de densidad de Hipervolumen que estaba presente en SMS-EMOA por una combinación de dos indicadores: IGD+ \eqref{eq:IGDp} y la Energía-S de Riesz \eqref{eq:S_energy}. Al ser estos dos indicadores de categorías diferentes (convergencia principalmente y diversidad) tendrán objetivos conflictuantes que obligarán a explorar una región distinta del espacio de estados. Estos dos indicadores se combinan por medio de la función aumentada de Tchebycheff,  qeue para un vector $\vec{x}=(x_0,x_1)$ está dada por
+En esta sección se detalla el algoritmo usado en este trabajo. Recibe el nombre de Pareto Front Invariant EMOA (PFI-EMOA) y nace de la necesidad de encontrar un algoritmo que funcione para muchas dimensiones y a la vez que no tenga las restricciones mencionadas en el último párrafo de la sección anterior. La idea principal de este algoritmo es seguir con el marco principal de SMS-EMOA; es decir, usar non-dominated sorting para rankear las soluciones y usar un algoritmo steady-state para no hacer muchas comparaciones de contribuciones a indicadores. La diferencia principal es que se reemplaza el estimador de densidad de Hipervolumen que estaba presente en SMS-EMOA por una combinación de dos indicadores: IGD+ \eqref{eq:IGDp} y la Energía-S de Riesz \eqref{eq:S_energy}. Al ser estos dos indicadores de categorías diferentes (convergencia principalmente y diversidad) tendrán objetivos conflictuantes que obligarán a explorar una región distinta del espacio de estados. Estos dos indicadores se combinan por medio de la función aumentada de Tchebycheff,  qeue para un vector $\vec{x}=(x_0,x_1)$ está dada por
 
 
 \begin{equation} \label{eq:ATCH}
@@ -390,12 +444,16 @@ En esta sección se detalla el algoritmo usado en este trabajo. Recibe el nombre
 
 Sustituyendo cada uno de los indicadores tenemos
 \begin{align*}
-\text{ATCH}_{\vec{w}}=({\text{IGD}}^+(A,Z),E_s(A)), \nonumber
+    \text{ATCH}_{\vec{w}}=({\text{IGD}}^+(A,Z),E_s(A)), \nonumber
 \end{align*}
+
+% \begin{align} \label{eq:ATCH}
+%     \text{ATCH}_{\vec{w}}({\text{IGD}}^+(A,Z),E_s(A))=&\max \{w_0{\text{IGD}}^+(A,Z),w_1E_s(A)\}\\&+\alpha ({\text{IGD}}^+(A,Z)+E_s(A))
+% \end{align}
 
 donde $Z$ es un conjunto de referencia y $A$ es la aproximación al frente de Pareto.
 
-Una característica interesante de hacer esta combinación es que se obtiene un indicador que no es consistente de Pareto. Esto se debe a un teorema probado en \cite{falcon-cardonaConstructionParetoCompliantCombined2022} que asegura que si se combina un indicador débilmente consistente de Pareto (IGD+) \eqref{eq:consistente_Pareto} con uno que no lo es (Energía-S), entonces se tendrá como resultado uno que no es consistente de Pareto. Entonces se deben analizar los tres casos de la Figura \ref{fig:casos} como si fuera un problema de dominancia usual en dos dimensiones.
+Una característica interesante de hacer esta combinación es que se obtiene un indicador que no es consistente de Pareto. Esto se debe a un teorema probado en \cite{falcon-cardonaConstructionParetoCompliantCombined2022} que asegura que si se combina un indicador débilmente consistente de Pareto (IGD+) \eqref{eq:consistente_debil_Pareto} con uno que no lo es (Energía-S), entonces se tendrá como resultado uno que no es consistente de Pareto. Entonces se deben analizar los tres casos de la Figura \ref{fig:casos} como si fuera un problema de dominancia usual en dos dimensiones.
 
 \begin{figure}[H]
     \centering

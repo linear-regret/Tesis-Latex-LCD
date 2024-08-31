@@ -38,6 +38,8 @@
 \renewcommand{\listalgorithmname}{Lista de Algoritmos}
 \usepackage[noend]{algpseudocode}
 \usepackage{amsthm}
+\usepackage{pdfpages}
+
 \usepackage{imakeidx}
 
 \makeatletter
@@ -169,7 +171,7 @@
 % \include{Agradecimientos/Dedicatoria}       % Comentar línea si no se usa
 % \include{Agradecimientos/Agradecimientos}   % Comentar línea si no se usa 
 % \include{Declaracion/Declaracion}           % Comentar línea si no se usa
-\include{Resumen/Resumen}                   % Comentar línea si no se usa
+\includepdf[pages=-]{./Declaracion/Protesta_Universitaria_firmada_FAV.pdf}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                   ÍNDICES                         %
@@ -204,6 +206,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \appendix
 \include{Apendice1/Apendice1}               % Colocar los circuitos, manuales, código fuente, pruebas de teoremas, etc.
+\include{Apendice2/Apendice2}               % Colocar los circuitos, manuales, código fuente, pruebas de teoremas, etc.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                   REFERENCIAS                     %
