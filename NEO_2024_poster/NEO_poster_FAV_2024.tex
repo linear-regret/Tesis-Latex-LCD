@@ -116,23 +116,16 @@ fernando\_avitua@ciencias.unam.mx@email.com\textsuperscript{1}, carlos.hernandez
 %----------------------------------------------------------------------------------------
 
 \section{Abstract}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-%----------------------------------------------------------------------------------------
-%	INTRODUCTION
-%----------------------------------------------------------------------------------------
+Indicator-Based Evolutionary Multi-Objective Algorithms (IB-EMOAs) have demonstrated efficacy in identifying Pareto Fronts where traditional Pareto dominance-based methods might not be as effective. However, selecting the appropriate indicator for specific problem contexts remains challenging. Decision-makers might prioritize a Pareto Front (PF) approximation that offers enhanced diversity rather than one with superior convergence. The PFI-EMOA algorithm has tackled this the trade-off between convergence and diversity by designing a composite indicator within the density estimator, leveraging a specific combination of the Inverted Generational Distance Plus (IGD+) and S-energy metrics. In our study, we explore the extent to which an IB-EMOA favors solutions that exhibit greater diversity or convergence. This is achieved by modifying the scalarization approach used in PFI-EMOA, systematically adjusting the weights assigned to IGD+ and S-energy. We then evaluate the impact of altering these weights on the overall quality of the Pareto Front approximation, as assessed by various Quality Indicators (QIs).
 
 \section{Introduction}\label{section:1}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Quality Indicators (QIs) serve as critical tools for evaluating Pareto Front approximations, assessing metrics such as convergence to a reference set and the diversity of solutions [1]. Evolutionary Multi-Objective Algorithms (EMOAs) that rely on Pareto dominance often struggle with the identification of varied Pareto Fronts, especially as the number of objectives increases or the shape of the Pareto Front (PF) varies [2]. To overcome these limitations, Indicator-Based EMOAs (IB-EMOAs) have been successfully implemented. These algorithms employ QIs to navigate the search space, continuously balancing exploration and exploitation by evaluating the characteristics of the approximation set at each step of the MOEA process.
 
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
+PFI-EMOA [3], a variant of IB-EMOA, parallels SMS-EMOA [4] but distinguishes itself through its density estimator, which incorporates a custom QI. This QI merges a convergence indicator (Inverted Generational Distance Plus, IGD+) and a diversity indicator (S-energy), employing an order-preserving Tchebyshev augmented function to integrate their contributions effectively. Initially, the algorithm employed fixed weight vectors w=(0.5,0.5) for scenarios with two and three objectives and w=(0.9,0.1) for configurations exceeding three objectives. This weighting strategy, favoring IGD+ for higher objective counts, was designed to mitigate the risk of convergence stagnation due to the progressively smaller dominated regions.
 
+In this study, we conduct a statistical analysis to examine how varying these weight combinations—in favor of either convergence or diversity—affects the output of PFI-EMOA. We present our findings in Figure 1, highlighting the impact of different weighting strategies on the quality of the Pareto Front approximations.
 
-%
-%----------------------------------------------------------------------------------------
-%	OBJECTIVES
-%----------------------------------------------------------------------------------------
 
 
 
